@@ -1,0 +1,93 @@
+#pfo-sidebar {
+    background-color: #2e75bd;
+    border: 1px solid #ebf2ff;
+    width: 20%;
+    position: fixed;
+    bottom: 0;
+    top: 0;
+}
+
+#pfo-sidebar img {
+    width: 100%;
+    height: auto;
+}
+
+#pfo-sidebar ul {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#pfo-sidebar li {
+    text-align: center;
+}
+
+#pfo-sidebar a {
+    color: #a5a8b0;
+}
+
+#pfo-sidebar .logoContainer {
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    background: url("../images/logo.png") no-repeat;
+    background-size: 100%;
+}
+#pfo-sidebar li .fas {
+    font-size: 0;
+}
+
+
+@media screen and (max-width: 1199px) {
+    #pfo-sidebar .logoContainer {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    #pfo-sidebar .logoContainer {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    #pfo-sidebar .logoContainer {
+        height: 80px;
+        width: 80px;
+
+    }
+
+    #pfo-sidebar li {
+        font-size: 0;
+
+    }
+
+    #pfo-sidebar li .fas {
+        font-size: 30px;
+    }
+}
+
+
+@media screen and (max-width: 575px) {
+
+    #pfo-sidebar {
+        width: 115px;
+    }
+
+    #pfo-sidebar .logoContainer {
+        height: 50px;
+        width: 50px;
+        margin: auto;
+    }
+
+    #pfo-sidebar li {
+        font-size: 0;
+
+    }
+    #pfo-sidebar li .fas {
+        font-size: 20px;
+    }
+
+}
