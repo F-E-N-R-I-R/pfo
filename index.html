@@ -28,16 +28,17 @@
             <!-- ILUHA -->
         </div>
 
-        <div id="pfo-content">
+        <div id="pfo-content" class="light">
             <!-- ALER4 -->
             <div class="container">
                 <div class="row">
-                    <div id="myButtons" class="btn-group colors" data-toggle="buttons">
+
+                    <div id="myButtons" class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default active">
-                            <input id="btn1" type="radio" name="options" value="old_paper" checked/>Светлый<i class="fas fa-volleyball-ball"></i>
+                            <input id="btn1" type="radio" name="options" onchange="changecollor(value)" value="light" checked>Светлый<i class="fas fa-volleyball-ball"></i>
                         </label>
                         <label class="btn btn-default">
-                            <input id="btn2" type="radio" name="options" value="dark"/>Тёмный<i class="fas fa-bowling-ball"></i>
+                            <input id="btn2" type="radio" name="options" onchange="changecollor(value)" value="dark">Тёмный<i class="fas fa-bowling-ball"></i>
                         </label>
                     </div>
                     <div id="con" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -217,6 +218,12 @@
                     </div>
                 </div>
             </div>
+            <script>
+                function changecollor(style)
+                {
+                    document.getElementById('pfo-content').className = style;
+                }
+            </script>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
