@@ -1,10 +1,11 @@
 #pfo-sidebar {
     background-color: #2e75bd;
     border: 1px solid #ebf2ff;
-    width: 200px;
+    width: 150px;
     position: fixed;
     bottom: 0;
     top: 0;
+    z-index: 2;
 }
 
 #pfo-sidebar img {
@@ -36,6 +37,7 @@
     font-size: 0;
 }
 #window {
+    background-color:#FFF;
     text-align: center;
     padding: 15px;
     border: 3px solid #2e75bd;
@@ -43,7 +45,8 @@
     color: #2e75bd;
     display: none;
     position: absolute;
-    left: 200px;
+    left: 150px;
+    z-index: 2;
 }
 #window:target {display: block;}
 .close {
@@ -61,7 +64,7 @@
 }
 
 .fa-window-close {
-    color: red;
+    color: #908c75;
 }
 
 .modalList {
@@ -81,27 +84,25 @@
         height: 100px;
         width: 100%;
     }
-
-    #window {
-        top: 90px;
-    }
 }
 
 @media screen and (max-width: 767px) {
-    #pfo-sidebar .logoContainer {
+    #pfo-sidebar {
+        width: 70px;
     }
 
-    #pfo-sidebar {
-        width: 150px;
+    #pfo-sidebar .logoContainer {
+        height: 70px;
+        width: 70px;
     }
 
     #window {
-        top: 70px;
-        left: 150px;
+        left: 70px;
     }
 
     #pfo-sidebar li {
         font-size: 0;
+
     }
 
     #pfo-sidebar li .fas {
@@ -113,12 +114,11 @@
 @media screen and (max-width: 575px) {
 
     #pfo-sidebar {
-        width: 115px;
+        width: 50px;
     }
 
     #window {
-        left: 115px;
-        top: 50px;
+        left: 50px;
     }
 
     #pfo-sidebar .logoContainer {
