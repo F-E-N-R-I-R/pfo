@@ -1,9 +1,10 @@
 #pfo-nvbar {
     left: 150px;
     position: absolute;
-    right: 0;
+    right: 10px;
     z-index: 1;
     padding: 10px 10px 4px;
+    display: none;
 }
 
 #pfo-nvbar > button {

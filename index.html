@@ -1,218 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>PFO</title>
-        <link rel="stylesheet" href="assets/css/navbar.css">
-        <link rel="stylesheet" href="assets/css/sidebar.css">
-        <link rel="stylesheet" href="assets/css/base.css">
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.css">
-    </head>
-    <body>
-        <div id="pfo-sidebar">
-            <div class="logoContainer"></div>
-            <ul class="nav nav-stacked">
-                <li role="presentation"><a href="#">Home<i class="fas fa-home"></i></a></li>
-                <li role="presentation"><a href="#">Services<i class="fas fa-wrench"></i></a></li>
-                <li role="presentation"><a href="#">Technologies<i class="fas fa-cogs"></i></a></li>
-                <li role="presentation"><a href="#">Works<i class="fas fa-briefcase"></i></a></li>
-                <li role="presentation"><a href="#">Profile<i class="fas fa-user"></i></a></li>
-                <li role="presentation"><a href="#">Messages<i class="fas fa-comment-alt"></i></a></li>
-            </ul>
-        </div>
+<head>
+	<meta charset="UTF-8">
+	<title>PFO</title>
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.css">
+	<link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
+	<link rel="stylesheet" href="assets/css/navbar.css">
+	<link rel="stylesheet" href="assets/css/sidebar.css">
+	<link rel="stylesheet" href="assets/css/base.css">
+</head>
+<body>
+	<div id="pfo">
+		<div id="pfo-sidebar">
+			<a href="#window" class="logo">
+				<div class="logoContainer"></div>
+			</a>
+			<ul class="nav nav-stacked"></ul>
+		</div>
 
-        <div id="pfo-nvbar" >
-            <button type="button" class="btn btn-primary pull-right btn-run">RUN<i class="fas fa-code"></i></button>
-            <div id="push" class="btn-group pull-right" role="group" aria-label="Basic example" >
-                <button type="button" class="btn btn-primary">HTML<i class="fab fa-html5"></i></button>
-                <button type="button" class="btn btn-primary">CSS<i class="fab fa-css3"></i></button>
-                <button type="button" class="btn btn-primary">JS<i class="fab fa-js"></i></button>
-            </div>
-        </div>
+		<div id="pfo-nvbar">
+			<button type="button" class="btn btn-primary pull-right btn-run">RUN<i class="fas fa-code"></i></button>
+			<div id="push" class="btn-group pull-right" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-primary btn-html">HTML<i class="fab fa-html5"></i></button>
+				<button type="button" class="btn btn-primary btn-css">CSS<i class="fab fa-css3"></i></button>
+				<button type="button" class="btn btn-primary btn-js">JS<i class="fab fa-js"></i></button>
+			</div>
+		</div>
 
-        <div id="pfo-content" class="light">
-            <div class="scroll-container">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus aut cum delectus
-                    dignissimos dolore exercitationem, fugiat, inventore labore magni mollitia numquam
-                    praesentium quam sapiente sint totam ut. Quasi, soluta?Lorem ipsum dolor sit amet,
-                    consectetur adipisicing elit. Ab accusantium animi assumenda, atque dolore ducimus ipsum
-                    libero magnam modi officiis, quisquam quo sapiente similique? Blanditiis impedit incidunt
-                    laboriosam saepe ullam.Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus
-                    aliquid architecto consequatur culpa, eligendi fugiat inventore molestias neque quo
-                    recusandae voluptates. Dolor eos fugit ipsam sed sequi totam voluptate!Lorem ipsum dolor
-                    sit amet, consectetur adipisicing elit. At consequatur, deleniti dignissimos dolorem
-                    dolorum error explicabo fuga illo, nam natus neque nobis numquam quae qui reprehenderit sunt
-                    tenetur totam, unde!lorem loLorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Architecto dicta eligendi, excepturi fugiat illum ipsum tempore unde? Blanditiis distinctio
-                    eius ex hic, inventore neque nulla perferendis quidem reprehenderit, sit vel!Lorem ipsum
-                    dolor sit amet, consectetur adipisicing elit. Debitis eveniet repudiandae sint soluta
-                    veritatis, voluptas. Amet eligendi est itaque magni nihil officia placeat, porro possimus
-                    quidem saepe tempora unde voluptates.Lorem ipsum dolor sit amet, consectetur adipisicing
-                    elit. Asperiores autem culpa est et eum ipsum iusto laboriosam mollitia officiis quaerat,
-                    recusandae sapiente totam ut veniam voluptatibus. Ipsum, neque, odio! Deserunt.A alias
-                    aliquam autem beatae commodi consectetur dolore ducimus enim fugiat, incidunt ipsa libero,
-                    nam neque nesciunt nostrum officiis quae quaerat qui quos rem sed sint temporibus ullam
-                    veritatis voluptates.Ad at dignissimos eveniet exercitationem explicabo fuga illo modi,
-                    nemo nobis omnis praesentium repellat reprehenderit sapiente? Deserunt distinctio, expedita
-                    incidunt modi numquam omnis perspiciatis, quas sint sunt suscipit unde voluptatum.Aspernatur
-                    dolorum fugit iste molestias odit quasi repellendus unde veritatis voluptate. Architecto
-                    consequatur, delectus deserunt distinctio dolore eligendi enim eos esse eum laudantium
-                    libero mollitia numquam odio quos vel, vero.Cumque dicta ea facilis harum impedit iste
-                    labore nihil porro veniam! Hic libero necessitatibus nulla pariatur repudiandae voluptatem!
-                    Cumque ipsa ipsum iusto maiores nihil porro quasi quidem rerum soluta voluptas!Ab accusamus,
-                    adipisci alias, assumenda, deserunt facilis id ipsum laboriosam natus officia quidem
-                    repellendus ullam! Aut consequuntur corporis cupiditate dignissimos dolorem eos est eveniet,
-                    facilis itaque nesciunt nisi nobis repudiandae.Aliquam, consequuntur, ullam. Distinctio
-                    explicabo, impedit? Ad aperiam debitis dicta distinctio earum facere, incidunt iure, maxime
-                    minus nobis, non nostrum nulla odio quae quam rem sint tenetur vel veniam voluptate.A
-                    aliquam incidunt ipsa iste iure magnam quas sequi tenetur totam vel. Asperiores corporis
-                    cupiditate iusto numquam praesentium quod recusandae sequi? A ab illo molestiae odit
-                    provident quas quia ut.A cumque cupiditate dolores eligendi error explicabo facere natus
-                    veritatis? Accusamus, corporis cum cumque deserunt dolorem eum fugiat impedit in itaque
-                    laudantium natus nesciunt qui, quisquam saepe veritatis voluptate voluptatum.Lorem ipsum
-                    dolor sit amet, consectetur adipisicing elit. Asperiores nihil quasi ratione ullam! Ex
-                    exercitationem libero quis ratione similique. A assumenda illum ipsum unde vel. Aliquid
-                    dicta ducimus quod voluptas.Assumenda ipsa magnam nesciunt officia. Aliquam blanditiis
-                    cumque debitis libero necessitatibus porro quidem. Alias autem ea eos ex fuga hic incidunt
-                    nostrum praesentium quaerat quidem quo, recusandae sint, unde vel?Accusantium aspernatur
-                    assumenda consequuntur, dicta dolorem error est libero natus odio odit provident quas
-                    ratione rem sapiente sed similique tempora vel. Dignissimos facilis iste officiis,
-                    perspiciatis possimus quisquam repudiandae voluptates?Amet corporis eligendi eos excepturi
-                    fuga illum ipsa, iusto natus non odio perferendis ratione repellendus sequi tempora tempore
-                    vitae voluptatem? Architecto dolore, doloribus ea excepturi ipsum molestiae nemo odit
-                    sapiente?Aperiam debitis deserunt dolorum eos, error hic iste libero, neque odio omnis
-                    porro quidem quis reprehenderit repudiandae saepe sapiente sit voluptas. Accusantium dicta
-                    expedita nobis provident sapiente sequi similique velit?Accusamus alias asperiores atque
-                    autem, commodi consectetur culpa cum cupiditate delectus distinctio dolores doloribus earum
-                    eos hic illo inventore iusto laboriosam maiores neque obcaecati odit provident quam
-                    reprehenderit, similique voluptatibus.Accusantium amet at atque aut consequatur corporis
-                    debitis ea eligendi error eveniet excepturi expedita facere incidunt iusto labore minus
-                    molestiae, neque nihil nisi nostrum perspiciatis rem rerum sunt suscipit ut.Atque blanditiis
-                    error et exercitationem quasi. Commodi cum est harum possimus quas qui vel voluptatem?
-                    Architecto cupiditate delectus deleniti fuga ipsam iure laudantium magni nam nihil,
-                    obcaecati perspiciatis sequi veniam?A beatae consequuntur dolorum magni molestias nisi
-                    quibusdam ratione vel vero voluptatem. Aliquam amet ducimus eius, eum impedit incidunt
-                    itaque magni minima minus odio perferendis perspiciatis quam recusandae rem sed!Lorem ipsum
-                    dolor sit amet, consectetur adipisicing elit. Aperiam ipsum laborum voluptatibus. A ad alias
-                    animi blanditiis, cupiditate dolorum, eius eligendi est eveniet laudantium minus
-                    perspiciatis quae repellat reprehenderit, sint?Ab aliquam autem blanditiis, consequatur
-                    doloremque expedita magnam magni natus praesentium quas quod, similique veniam voluptates?
-                    Accusantium aliquam, aspernatur blanditiis dignissimos doloremque fuga labore obcaecati qui
-                    sint veritatis vitae voluptas!Alias beatae consectetur inventore labore maxime molestias
-                    neque nesciunt nobis praesentium vel! Accusamus aliquid dolor fuga harum laudantium natus
-                    necessitatibus nesciunt, praesentium quis rem, suscipit unde voluptatibus? Dolores minus,
-                    officia!Ab asperiores, aut deserunt illum, ipsam maiores nesciunt nihil nobis nulla numquam
-                    omnis optio tenetur! Adipisci architecto aspernatur ea error, mollitia nam quas ratione
-                    saepe suscipit tenetur ullam veritatis, voluptatibus?Aspernatur, dolor laboriosam nam
-                    perferendis tenetur voluptas voluptatibus. Animi at consequatur et eveniet ipsum magnam nam
-                    odit placeat possimus veritatis vero, voluptas? Ad aut doloremque illo laborum totam velit
-                    veniam!Asperiores aspernatur aut autem beatae consequuntur corporis dolor error esse et
-                    facere illo, illum iste laboriosam magnam maxime nulla obcaecati omnis possimus quas
-                    quisquam repellat reprehenderit sapiente soluta vel velit.Alias amet assumenda doloremque
-                    error molestias placeat quasi quo! Ad adipisci autem beatae culpa dolores doloribus eligendi
-                    eum eveniet incidunt iusto laboriosam modi molestias porro, quia, sint suscipit tempora
-                    tenetur!Alias aliquam animi asperiores atque cum dignissimos eius eos ex facere hic
-                    laboriosam, nemo nihil nulla obcaecati, odio odit officia optio pariatur soluta totam, unde
-                    velit vero. Dolor natus, repellendus.Amet assumenda est incidunt, ipsam maiores nemo,
-                    nesciunt obcaecati possimus provident qui quisquam suscipit tenetur, voluptas. Ad blanditiis
-                    ducimus error natus officiis perspiciatis rem tenetur totam! Quaerat recusandae rerum vel?
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque et magnam maiores quam
-                    quo rerum vel? Aspernatur enim omnis quasi voluptate voluptatum. Id, iure necessitatibus
-                    nulla odio reiciendis vel!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-                    accusamus aut cum delectus dignissimos dolore exercitationem, fugiat, inventore labore magni
-                    mollitia numquam praesentium quam sapiente sint totam ut. Quasi, soluta?Lorem ipsum dolor
-                    sit amet, consectetur adipisicing elit. Ab accusantium animi assumenda, atque dolore ducimus
-                    ipsum libero magnam modi officiis, quisquam quo sapiente similique? Blanditiis impedit
-                    incidunt laboriosam saepe ullam.Lorem ipsum dolor sit amet, consectetur adipisicing elit. A
-                    accusamus aliquid architecto consequatur culpa, eligendi fugiat inventore molestias neque
-                    quo recusandae voluptates. Dolor eos fugit ipsam sed sequi totam voluptate!Lorem ipsum dolor
-                    sit amet, consectetur adipisicing elit. At consequatur, deleniti dignissimos dolorem dolorum
-                    error explicabo fuga illo, nam natus neque nobis numquam quae qui reprehenderit sunt tenetur
-                    totam, unde!lorem    loLorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto
-                    dicta eligendi, excepturi fugiat illum ipsum tempore unde? Blanditiis distinctio eius ex
-                    hic, inventore neque nulla perferendis quidem reprehenderit, sit vel!Lorem ipsum dolor sit
-                    amet, consectetur adipisicing elit. Debitis eveniet repudiandae sint soluta veritatis,
-                    voluptas. Amet eligendi est itaque magni nihil officia placeat, porro possimus quidem saepe
-                    tempora unde voluptates.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
-                    autem culpa est et eum ipsum iusto laboriosam mollitia officiis quaerat, recusandae sapiente
-                    totam ut veniam voluptatibus. Ipsum, neque, odio! Deserunt.A alias aliquam autem beatae
-                    commodi consectetur dolore ducimus enim fugiat, incidunt ipsa libero, nam neque nesciunt
-                    nostrum officiis quae quaerat qui quos rem sed sint temporibus ullam veritatis voluptates.
-                    Ad at dignissimos eveniet exercitationem explicabo fuga illo modi, nemo nobis omnis
-                    praesentium repellat reprehenderit sapiente? Deserunt distinctio, expedita incidunt modi
-                    numquam omnis perspiciatis, quas sint sunt suscipit unde voluptatum.Aspernatur dolorum fugit
-                    iste molestias odit quasi repellendus unde veritatis voluptate. Architecto consequatur,
-                    delectus deserunt distinctio dolore eligendi enim eos esse eum laudantium libero mollitia
-                    numquam odio quos vel, vero.Cumque dicta ea facilis harum impedit iste labore nihil porro
-                    veniam! Hic libero necessitatibus nulla pariatur repudiandae voluptatem! Cumque ipsa ipsum
-                    iusto maiores nihil porro quasi quidem rerum soluta voluptas! Ab accusamus, adipisci alias,
-                    assumenda, deserunt facilis id ipsum laboriosam natus officia quidem repellendus ullam! Aut
-                    consequuntur corporis cupiditate dignissimos dolorem eos est eveniet, facilis itaque
-                    nesciunt nisi nobis repudiandae.Aliquam, consequuntur, ullam. Distinctio explicabo, impedit?
-                    Ad aperiam debitis dicta distinctio earum facere, incidunt iure, maxime minus nobis, non
-                    nostrum nulla odio quae quam rem sint tenetur vel veniam voluptate.A aliquam incidunt ipsa
-                    iste iure magnam quas sequi tenetur totam vel. Asperiores corporis cupiditate iusto numquam
-                    praesentium quod recusandae sequi? A ab illo molestiae odit provident quas quia ut.A cumque
-                    cupiditate dolores eligendi error explicabo facere natus veritatis? Accusamus, corporis cum
-                    cumque deserunt dolorem eum fugiat impedit in itaque laudantium natus nesciunt qui,
-                    quisquam saepe veritatis voluptate voluptatum.Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Asperiores nihil quasi ratione ullam! Ex exercitationem libero quis
-                    ratione similique. A assumenda illum ipsum unde vel. Aliquid dicta ducimus quod voluptas.
-                    Assumenda ipsa magnam nesciunt officia. Aliquam blanditiis cumque debitis libero
-                    necessitatibus porro quidem. Alias autem ea eos ex fuga hic incidunt nostrum praesentium
-                    quaerat quidem quo, recusandae sint, unde vel?Accusantium aspernatur assumenda consequuntur,
-                    dicta dolorem error est libero natus odio odit provident quas ratione rem sapiente sed
-                    similique tempora vel. Dignissimos facilis iste officiis, perspiciatis possimus quisquam
-                    repudiandae voluptates?Amet corporis eligendi eos excepturi fuga illum ipsa, iusto natus
-                    non odio perferendis ratione repellendus sequi tempora tempore vitae voluptatem? Architecto
-                    dolore, doloribus ea excepturi ipsum molestiae nemo odit sapiente?Aperiam debitis deserunt
-                    dolorum eos, error hic iste libero, neque odio omnis porro quidem quis reprehenderit
-                    repudiandae saepe sapiente sit voluptas. Accusantium dicta expedita nobis provident
-                    sapiente sequi similique velit?Accusamus alias asperiores atque autem, commodi consectetur
-                    culpa cum cupiditate delectus distinctio dolores doloribus earum eos hic illo inventore
-                    iusto laboriosam maiores neque obcaecati odit provident quam reprehenderit, similique
-                    voluptatibus.Accusantium amet at atque aut consequatur corporis debitis ea eligendi error
-                    eveniet excepturi expedita facere incidunt iusto labore minus molestiae, neque nihil nisi
-                    nostrum perspiciatis rem rerum sunt suscipit ut.Atque blanditiis error et exercitationem
-                    quasi. Commodi cum est harum possimus quas qui vel voluptatem? Architecto cupiditate
-                    delectus deleniti fuga ipsam iure laudantium magni nam nihil, obcaecati perspiciatis sequi
-                    veniam?A beatae consequuntur dolorum magni molestias nisi quibusdam ratione vel vero
-                    voluptatem. Aliquam amet ducimus eius, eum impedit incidunt itaque magni minima minus odio
-                    perferendis perspiciatis quam recusandae rem sed!Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Aperiam ipsum laborum voluptatibus. A ad alias animi blanditiis,
-                    cupiditate dolorum, eius eligendi est eveniet laudantium minus perspiciatis quae repellat
-                    reprehenderit, sint?Ab aliquam autem blanditiis, consequatur doloremque expedita magnam
-                    magni natus praesentium quas quod, similique veniam voluptates? Accusantium aliquam,
-                    aspernatur blanditiis dignissimos doloremque fuga labore obcaecati qui sint veritatis vitae
-                    voluptas!Alias beatae consectetur inventore labore maxime molestias neque nesciunt nobis
-                    praesentium vel! Accusamus aliquid dolor fuga harum laudantium natus necessitatibus
-                    nesciunt, praesentium quis rem, suscipit unde voluptatibus? Dolores minus, officia!Ab
-                    asperiores, aut deserunt illum, ipsam maiores nesciunt nihil nobis nulla numquam omnis
-                    optio tenetur! Adipisci architecto aspernatur ea error, mollitia nam quas ratione saepe
-                    suscipit tenetur ullam veritatis, voluptatibus?Aspernatur, dolor laboriosam nam perferendis
-                    tenetur voluptas voluptatibus. Animi at consequatur et eveniet ipsum magnam nam odit placeat
-                    possimus veritatis vero, voluptas? Ad aut doloremque illo laborum totam velit veniam!
-                    Asperiores aspernatur aut autem beatae consequuntur corporis dolor error esse et facere
-                    illo, illum iste laboriosam magnam maxime nulla obcaecati omnis possimus quas quisquam
-                    repellat reprehenderit sapiente soluta vel velit.Alias amet assumenda doloremque error
-                    molestias placeat quasi quo! Ad adipisci autem beatae culpa dolores doloribus eligendi eum
-                    eveniet incidunt iusto laboriosam modi molestias porro, quia, sint suscipit tempora tenetur!
-                    Alias aliquam animi asperiores atque cum dignissimos eius eos ex facere hic laboriosam,
-                    nemo nihil nulla obcaecati, odio odit officia optio pariatur soluta totam, unde velit vero.
-                    Dolor natus, repellendus.Amet assumenda est incidunt, ipsam maiores nemo, nesciunt obcaecati
-                    possimus provident qui quisquam suscipit tenetur, voluptas. Ad blanditiis ducimus error
-                    natus officiis perspiciatis rem tenetur totam! Quaerat recusandae rerum vel?Lorem ipsum
-                    dolor sit amet, consectetur adipisicing elit. At atque et magnam maiores quam quo rerum
-                    vel? Aspernatur enim omnis quasi voluptate voluptatum. Id, iure necessitatibus nulla odio
-                    reiciendis vel!
-                </p>
-            </div>
-        </div>
+		<div id="pfo-content">
+			<div class="scroll-container">
+				<pre></pre>
+				<div class="invite">
+					HI
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 
-        <script src="node_modules/jquery/dist/jquery.js"></script>
-        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="assets/js/index.js"></script>
-    </body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="node_modules/highlightjs/highlight.pack.min.js"></script>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sidebar.js"></script>
+<script src="assets/js/navbar.js"></script>
+<script src="assets/js/content.js"></script>
+<script src="assets/js/index.js"></script>
 </html>

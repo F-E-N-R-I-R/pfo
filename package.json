@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bootstrap": "^3.4.1",
+    "highlightjs": "^9.12.0",
     "jquery": "^3.4.0"
   },
   "devDependencies": {
