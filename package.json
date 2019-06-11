@@ -6,7 +6,8 @@
   "dependencies": {
     "bootstrap": "^3.4.1",
     "highlightjs": "^9.12.0",
-    "jquery": "^3.4.0"
+    "jquery": "^3.4.0",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1"

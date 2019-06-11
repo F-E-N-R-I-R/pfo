@@ -8,14 +8,6 @@
     justify-content: space-between;
 }
 
-.del-timer-btn {
-    padding: 5px;
-    margin: 5px;
-    font-weight: bold;
-    color:#FFFFFF;
-    cursor: pointer;
-}
-
 .timer {
     padding: 5px;
     margin: 5px;
@@ -29,4 +21,11 @@
     margin: 5px;
     font-weight: bold;
     color: #FFFFFF;
+    display: inline-table;
+}
+
+.timer-btn {
+    width: 35px;
+    border-radius: 0;
+    font-weight: bold;
 }
