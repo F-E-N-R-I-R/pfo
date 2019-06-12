@@ -5,9 +5,21 @@ $(function () {
                 this.init(options);
             }
 
+            function TimerPage() {
+                this.init();
+            }
+
             Timer.prototype = {
                 seconds: 0,
                 timer: null,
+                config: {
+                    defaultTimerValue: '00:00:00',
+                  icons: {
+                    deleteBtn: '✖',
+                    pauseBtn: '||',
+                    startBtn: '>'
+                  },
+                },
                 init(options) {
                     this.options = options;
                     this.container = this._bindStructure();
@@ -20,19 +32,17 @@ $(function () {
                 },
 
                 _bindEvents() {
-                    var self = this;
-
-                    this.container.find('.del-timer-btn').on('click', function () {
-                        self._destroy();
-                        self.options.container.trigger('timer:destroy', self.options);
+                    this.container.find('.del-timer-btn').on('click', () => {
+                        this._destroy();
+                        this.options.container.trigger('timer:destroy', this.options);
                     });
 
-                    this.container.find('.pause-btn').on('click', function () {
-                        self._pause();
+                    this.container.find('.pause-btn').on('click', () => {
+                        this._pause();
                     });
 
-                    this.container.find('.timer').on('click', function () {
-                        self._addRound();
+                    this.container.find('.timer').on('click', () => {
+                        this._addRound();
                     });
                 },
 
@@ -45,9 +55,9 @@ $(function () {
                                 'background-color': this.options.color
                             },
                             html:
-                                $('<span>', {class: 'timer', text: '00:00:00'}).get(0).outerHTML +
-                                $('<button>', {class: 'btn btn-primary timer-btn pause-btn', text: '||'}).get(0).outerHTML +
-                                $('<button>', {class: 'btn btn-danger timer-btn del-timer-btn', text: '✖'}).get(0).outerHTML,
+                                $('<span>', {class: 'timer', text: this.config.defaultTimerValue}).get(0).outerHTML +
+                                $('<button>', {class: 'btn btn-primary timer-btn pause-btn', text: this.config.icons.pauseBtn}).get(0).outerHTML +
+                                $('<button>', {class: 'btn btn-danger timer-btn del-timer-btn', text: this.config.icons.deleteBtn}).get(0).outerHTML,
                         });
                 },
 
@@ -77,10 +87,10 @@ $(function () {
                    if (this.timer) {
                        clearTimeout(this.timer);
                        this.timer = null;
-                       this.container.find('.pause-btn').text('>');
+                       this.container.find('.pause-btn').text(this.config.icons.startBtn);
                    } else {
                        this._start();
-                       this.container.find('.pause-btn').text('||');
+                       this.container.find('.pause-btn').text(this.config.icons.pauseBtn);
                    }
                 },
 
@@ -90,9 +100,9 @@ $(function () {
                     this._start();
                 },
                 _getValue() {
-                    var seconds = '' + parseInt(this.seconds % 60);
-                    var minutes = '' + parseInt(this.seconds / 60);
-                    var hours = '' + parseInt(parseInt(this.seconds / 60) / 60);
+                    let seconds = '' + parseInt(this.seconds % 60);
+                    let minutes = '' + parseInt(this.seconds / 60);
+                    let hours = '' + parseInt(parseInt(this.seconds / 60) / 60);
 
                     return [
                         hours.length < 2 ? '0' + hours : hours,
@@ -101,10 +111,6 @@ $(function () {
                     ].join(":")
                 },
             };
-
-            function TimerPage() {
-                this.init();
-            }
 
             TimerPage.prototype = {
                 MAX_TIMERS: 4,
@@ -180,29 +186,195 @@ $(function () {
 
                     return color;
                 }
-
-
             };
 
             new TimerPage()
         },
 
         ES5() {
+            var MAX_TIMERS = 4;
+            var timers = {size: 0};
+            var config = {
+                defaultTimerValue: '00:00:00',
+                icons: {
+                    deleteBtn: '✖',
+                    pauseBtn: '||',
+                    startBtn: '>'
+                },
+            };
+            var container = $('.container');
+            container.append(getPageStructure());
 
+            var nameInputElement = container.find('input');
+            var btnAddtimer = container.find('button');
+            var timerContainer = container.find('.timers-container');
+            var timerValuesContainer = container.find('.timers-values-container');
+
+            bindPageEvents();
+
+
+            function bindPageEvents() {
+                btnAddtimer.on('click', () => {
+                    addTimer();
+                });
+
+                nameInputElement.on('keyup', (e) => {
+                    btnAddtimer.prop('disabled', !nameInputElement.val());
+                    if (e.keyCode === 13){
+                        addTimer();
+                    }
+                });
+
+                container.on('timer:destroy', (e, options) => {
+                    delete timers[options.id];
+                    timers.size -= 1;
+                    updateInputState();
+                })
+            }
+
+            function getPageStructure() {
+                return $(
+                    '<div>',
+                    {
+                        class: 'timer-page',
+                        html:
+                            $('<input>', { type: 'text' }).get(0).outerHTML +
+                            $('<button>', { class: 'btn', text: '+', disabled: true }).get(0).outerHTML +
+                            $('<div>', { class: 'timers-container' }).get(0).outerHTML +
+                            $('<div>', { class: 'timers-values-container' }).get(0).outerHTML,
+                    });
+            }
+
+             function addTimer() {
+                 var options = {
+                    container: container,
+                    name: nameInputElement.val(),
+                    valuesContainer: timerValuesContainer,
+                    color: getRandomColor(),
+                    id: Date.now(),
+                };
+
+                timers[options.id] = createTimer(options);
+                timers.size = timers.size + 1;
+                timerContainer.append(timers[options.id].container);
+                nameInputElement.val('');
+                btnAddtimer.prop('disabled', true);
+                updateInputState();
+            }
+
+            function updateInputState() {
+                nameInputElement.prop('disabled', timers.size >= MAX_TIMERS);
+            }
+
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+
+                return color;
+            }
+
+            function createTimer(options) {
+                var timer = {
+                    seconds: 0,
+                    options: options,
+                    container: $(
+                        '<div>',
+                        {
+                            class: 'timer-block',
+                            css: {
+                                'background-color': options.color
+                            },
+                            html:
+                                $('<span>', { class: 'timer', text: config.defaultTimerValue }).get(0).outerHTML +
+                                $('<button>', {
+                                    class: 'btn btn-primary timer-btn pause-btn',
+                                    text: config.icons.pauseBtn
+                                }).get(0).outerHTML +
+                                $('<button>', {
+                                    class: 'btn btn-danger timer-btn del-timer-btn',
+                                    text: config.icons.deleteBtn
+                                }).get(0).outerHTML,
+                        })
+                };
+
+                var timerHelper = getTimerHelper(timer);
+
+                timer.container.find('.del-timer-btn').on('click', function () {
+                    timerHelper.remove();
+                });
+
+                timer.container.find('.pause-btn').on('click', function () {
+                    timerHelper.pause();
+                });
+
+                timer.container.find('.timer').on('click', function () {
+                    timerHelper.round();
+                });
+
+                timerHelper.start();
+
+                return timer;
+            }
+
+            var getTimerHelper = function(timer) {
+                return {
+                    start: function() {
+                        var self = this;
+                        timer.timeout = setTimeout(function() {
+                            timer.seconds++;
+                            timer.container.find('.timer').text(self.value(timer.seconds));
+                            self.start(timer);
+                        }, 1000);
+                    },
+                    pause: function() {
+                        if (timer.timeout) {
+                            clearTimeout(timer.timeout);
+                            timer.timeout = null;
+                            timer.container.find('.pause-btn').text(config.icons.startBtn);
+                        } else {
+                            this.start(timer);
+                            timer.container.find('.pause-btn').text(config.icons.pauseBtn);
+                        }
+                    },
+                    remove: function() {
+                        timer.container.remove();
+                        timer.options.valuesContainer.find(`.${timer.options.id}`).remove();
+                    },
+                    round: function() {
+                        var value = $('<span>', {
+                            class: 'timer-value ' + timer.options.id,
+                            text: timer.options.name + ' ' + timer.container.find('.timer').text(),
+                            css: {
+                                'background-color': timer.options.color
+                            },
+                        });
+                        var sameEl = timer.options.valuesContainer.find('.' + timer.options.id).last();
+
+                        sameEl.length ? value.insertAfter(sameEl) : timer.options.valuesContainer.append(value);
+                    },
+                    value: function() {
+                        var seconds = '' + parseInt(timer.seconds % 60);
+                        var minutes = '' + parseInt(timer.seconds / 60);
+                        var hours = '' + parseInt(parseInt(timer.seconds / 60) / 60);
+
+                        return [
+                            hours.length < 2 ? '0' + hours : hours,
+                            minutes.length < 2 ? '0' + minutes : minutes,
+                            seconds.length < 2 ? '0' + seconds : seconds,
+                        ].join(":")
+                    },
+                }
+            }
         },
 
         ES6() {
 
         },
-
-        UNDERSCORE() {
-
-        },
-
-        JQUERY() {
-
-        },
     };
 
-    versions.PROTOTYPE();
+    versions.ES5();
 });
