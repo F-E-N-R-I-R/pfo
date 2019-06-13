@@ -42,7 +42,6 @@ window.components.Content.prototype = {
     },
 
     onClickRun() {
-        this.codeWrapper = '';
         const projectHtml = $(this.current.eHtml).filter('.container');
         const projectCss = $('<style>', { text: this.current.eCss });
         const projectJs = $('<script>', { text: this.current.eJs });

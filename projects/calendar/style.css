@@ -1,32 +1,15 @@
-.timers-container {
-     display: flex;
-    justify-content: center;
+table {
+    border-collapse: collapse;
 }
 
-.timer-block {
-    display: flex;
-    justify-content: space-between;
+td,
+th {
+    border: 1px solid black;
+    padding: 3px;
+    text-align: center;
 }
 
-.del-timer-btn {
-    padding: 5px;
-    margin: 5px;
+th {
     font-weight: bold;
-    color:#FFFFFF;
-    cursor: pointer;
-}
-
-.timer {
-    padding: 5px;
-    margin: 5px;
-    font-weight: bold;
-    color:#FFFFFF;
-    cursor: pointer;
-}
-
-.timer-value {
-    padding: 5px;
-    margin: 5px;
-    font-weight: bold;
-    color: #FFFFFF;
+    background-color: #E6E6E6;
 }
