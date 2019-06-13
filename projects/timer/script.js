@@ -388,7 +388,7 @@ $(function () {
                     this._bindEvents();
                 }
 
-                static _bindStructure() {
+                _bindStructure() {
                     return $(
                         '<div>',
                         {
@@ -477,7 +477,7 @@ $(function () {
                     this._bindEvents()
                 }
 
-                static _bindStructure() {
+                _bindStructure() {
                     return $(
                         '<div>',
                         {
@@ -547,7 +547,7 @@ $(function () {
                     return color;
                 }
 
-                static generateValue(currentSeconds) {
+                generateValue(currentSeconds) {
                     let seconds = '' + parseInt(currentSeconds % 60);
                     let minutes = '' + parseInt(currentSeconds / 60);
                     let hours = '' + parseInt(parseInt(currentSeconds / 60) / 60);
@@ -565,5 +565,5 @@ $(function () {
         },
     };
 
-    versions.ES5();
+    versions.ES6();
 });
