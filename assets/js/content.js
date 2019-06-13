@@ -8,9 +8,9 @@ window.components.Content.prototype = {
         this.container = options.container.find('#pfo-content');
         this.codeWrapper = this.container.find('.scroll-container pre');
         this.inviteTpl = this.container.find('.invite');
+        // this._bindEvents();
     },
-
-    renderHighlightedText(text) {
+        renderHighlightedText(text) {
         const code = $('<code>', { text });
 
         hljs.highlightBlock(code[0]);
@@ -42,6 +42,7 @@ window.components.Content.prototype = {
     },
 
     onClickRun() {
+        this.codeWrapper = '';
         const projectHtml = $(this.current.eHtml).filter('.container');
         const projectCss = $('<style>', { text: this.current.eCss });
         const projectJs = $('<script>', { text: this.current.eJs });

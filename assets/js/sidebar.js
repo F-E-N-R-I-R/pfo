@@ -20,9 +20,7 @@ window.components.SideBar.prototype = {
     renderTab(data) {
         const link = $('<a>', { text: data.title });
         const element = $('<li>', { class: 'project', 'data-id': data.title });
-
         element.append(link);
-
         return element;
     },
 };

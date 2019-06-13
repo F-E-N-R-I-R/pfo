@@ -1,3 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+}
 p {
-    color: red;
+    margin: 0;
+}
+
+.addBlockForm{
+    margin: 20px auto;
+    font-size: 20px;
+}
+
+.addTimerBtn{
+    background-color: blue;
+    border: 1px solid transparent;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+
+}
+.addTimerBtn[disabled]{
+    background-color: gray;
+    border: 1px solid transparent;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+
+}
+#initiating {
+    display: flex;
+    margin: 0;
+}
+
+.addBlockForm{
+    display: flex;
+    justify-content: center;
+}
+
+.timerWrapper{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.timeBlock{
+    color: white;
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    padding: 5px;
+    margin: 5px;
+}
+.timer {
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+}
+.delTimerBtn {
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+    margin-left: 5px;
+    border: 1px solid transparent;
+}
+
+
+.blockWrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.timerBlock{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+.timer {
+    cursor: pointer;
+}
+
+.blockInfo {
+    padding: 5px;
+    color: white;
+    font-weight: bold;
 }

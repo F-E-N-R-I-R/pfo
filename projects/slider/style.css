@@ -1,0 +1,86 @@
+ul {
+    padding: 0;
+}
+
+.slider {
+    position: relative;
+    width: 300px;
+    margin: auto;
+    text-align: -webkit-center;
+}
+
+.controlArea {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+#sliderGoBack {
+    width: 20%;
+    height: 100%;
+}
+
+#sliderGoForward {
+    width: 20%;
+    height: 100%;
+}
+
+#sliderStop {
+    width: 60%;
+    height: 100%;
+}
+
+.red {
+    background-color: red;
+    width: 300px;
+    height: 200px;
+}
+
+
+
+.green {
+    background-color: green;
+    width: 300px;
+    height: 200px;
+}
+
+.blue {
+    background-color: blue;
+    width: 300px;
+    height: 200px;
+}
+
+.yellow {
+    background-color: yellow;
+    width: 300px;
+    height: 200px;
+}
+
+.slides {
+    display: none;
+}
+
+.activeSlide {
+    display: block;
+}
+
+.dots {
+    position: relative;
+    text-align: center;
+    bottom: 25px;
+}
+
+.dots li {
+     list-style: none;
+     width: 9px;
+     height: 9px;
+     background-color: black;
+     border-radius: 50%;
+     display: inline-block;
+     cursor: pointer;
+}
+
+.activeDot {
+    background-color: white;
+}

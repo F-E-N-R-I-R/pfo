@@ -22,7 +22,7 @@ $(function() {
                 .on('navbar:click:html', () => this.content.onClickHtml())
                 .on('navbar:click:css', () => this.content.onClickCss())
                 .on('navbar:click:js', () => this.content.onClickJs())
-                .on('navbar:click:run', () => this.content.onClickRun());
+                .on('navbar:click:run', () => this.content.onClickRun())
         },
     };
 
