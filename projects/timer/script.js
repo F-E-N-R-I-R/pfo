@@ -214,22 +214,16 @@ $(function () {
 
 
             function bindPageEvents() {
-                btnAddtimer.on('click', () => {
+                btnAddtimer.on('click', function() {
                     addTimer();
                 });
 
-                nameInputElement.on('keyup', (e) => {
+                nameInputElement.on('keyup', function(e) {
                     btnAddtimer.prop('disabled', !nameInputElement.val());
                     if (e.keyCode === 13){
                         addTimer();
                     }
                 });
-
-                container.on('timer:destroy', (e, options) => {
-                    delete timers[options.id];
-                    timers.size -= 1;
-                    updateInputState();
-                })
             }
 
             function getPageStructure() {
@@ -343,6 +337,9 @@ $(function () {
                     remove: function() {
                         timer.container.remove();
                         timer.options.valuesContainer.find(`.${timer.options.id}`).remove();
+                        delete timers[timer.options.id];
+                        timers.size -= 1;
+                        updateInputState();
                     },
                     round: function() {
                         var value = $('<span>', {
@@ -372,7 +369,199 @@ $(function () {
         },
 
         ES6() {
+            class Timer {
+                seconds = 0;
+                timer = null;
+                config = {
+                    defaultTimerValue: '00:00:00',
+                    icons: {
+                        deleteBtn: '✖',
+                        pauseBtn: '||',
+                        startBtn: '>'
+                    },
+                };
 
+                constructor(options) {
+                    this.options = options;
+                    this.container = this._bindStructure();
+                    this._start();
+                    this._bindEvents();
+                }
+
+                static _bindStructure() {
+                    return $(
+                        '<div>',
+                        {
+                            class: 'timer-block',
+                            css: {
+                                'background-color': this.options.color
+                            },
+                            html:
+                                $('<span>', {class: 'timer', text: this.config.defaultTimerValue}).get(0).outerHTML +
+                                $('<button>', {class: 'btn btn-primary timer-btn pause-btn', text: this.config.icons.pauseBtn}).get(0).outerHTML +
+                                $('<button>', {class: 'btn btn-danger timer-btn del-timer-btn', text: this.config.icons.deleteBtn}).get(0).outerHTML,
+                        });
+                }
+
+                getContainer() {
+                    return this.container;
+                }
+
+                _bindEvents() {
+                    this.container.find('.del-timer-btn').on('click', () => {
+                        this._destroy();
+                        this.options.container.trigger('timer:destroy', this.options);
+                    });
+
+                    this.container.find('.pause-btn').on('click', () => {
+                        this._pause();
+                    });
+
+                    this.container.find('.timer').on('click', () => {
+                        this._addRound();
+                    });
+                }
+
+                _addRound() {
+                    const value = $('<span>', {
+                        class: 'timer-value ' + this.options.id,
+                        text: this.options.name + ' ' + timerHelper.generateValue(this.seconds),
+                        css: {
+                            'background-color': this.options.color
+                        },
+                    });
+                    const sameEl = this.options.valuesContainer.find('.' + this.options.id).last();
+
+                    sameEl.length ? value.insertAfter(sameEl) : this.options.valuesContainer.append(value);
+                }
+
+                _destroy() {
+                    this.options.valuesContainer.find(`.${this.options.id}`).remove();
+                    this.container.remove();
+                }
+
+                _start() {
+                    this.timer = setTimeout(() => this._tick(), 1000);
+                }
+
+                _pause(){
+                    if (this.timer) {
+                        clearTimeout(this.timer);
+                        this.timer = null;
+                        this.container.find('.pause-btn').text(this.config.icons.startBtn);
+                    } else {
+                        this._start();
+                        this.container.find('.pause-btn').text(this.config.icons.pauseBtn);
+                    }
+                }
+
+                _tick() {
+                    this.seconds++;
+                    this.container.find('.timer').text(timerHelper.generateValue(this.seconds));
+                    this._start();
+                }
+            }
+
+            class TimerPage {
+                MAX_TIMERS = 4;
+                timers = { size: 0 };
+
+                constructor() {
+                    this.container = $('.container');
+                    this.container.append(this._bindStructure());
+                    this.nameInputElement = this.container.find('input');
+                    this.btnAddtimer = this.container.find('button');
+                    this.timerContainer = this.container.find('.timers-container');
+                    this.timerValuesContainer = this.container.find('.timers-values-container');
+
+                    this._bindEvents()
+                }
+
+                static _bindStructure() {
+                    return $(
+                        '<div>',
+                        {
+                            class: 'timer-page',
+                            html:
+                                $('<input>', { type: 'text' }).get(0).outerHTML +
+                                $('<button>', { class: 'btn', text: '+', disabled: true }).get(0).outerHTML +
+                                $('<div>', { class: 'timers-container' }).get(0).outerHTML +
+                                $('<div>', { class: 'timers-values-container' }).get(0).outerHTML,
+                        });
+                }
+
+                _bindEvents() {
+                    this.btnAddtimer.on('click', () => {
+                        this._addTimer();
+                    });
+
+                    this.nameInputElement.on('keyup', (e) => {
+                        this.btnAddtimer.prop('disabled', !this.nameInputElement.val());
+                        if (e.keyCode === 13){
+                            this._addTimer();
+                        }
+                    });
+
+                    this.container.on('timer:destroy', (e, options) => {
+                        delete this.timers[options.id];
+                        this.timers.size -= 1;
+                        this._updateInputState();
+                    })
+                }
+
+                _addTimer(){
+                    const options = {
+                        container: this.container,
+                        name: this.nameInputElement.val(),
+                        valuesContainer: this.timerValuesContainer,
+                        color: timerHelper.getRandomColor(),
+                        id: Date.now(),
+                    };
+
+                    this.timers[options.id] = new Timer(options);
+                    this.timers.size = this.timers.size + 1;
+                    this.timerContainer.append(this.timers[options.id].getContainer());
+                    this.nameInputElement.val('');
+                    this.btnAddtimer.prop('disabled', true);
+                    this._updateInputState();
+                }
+
+                _updateInputState() {
+                    this.nameInputElement.prop('disabled', this.timers.size >= this.MAX_TIMERS);
+                }
+            }
+
+            class TimerHelper {
+                colorHash = '#';
+                letters = '0123456789ABCDEF';
+
+                constructor() {}
+
+                getRandomColor() {
+                    let color = this.colorHash;
+
+                    for (let i = 0; i < 6; i++) {
+                        color += this.letters[Math.floor(Math.random() * 16)];
+                    }
+
+                    return color;
+                }
+
+                static generateValue(currentSeconds) {
+                    let seconds = '' + parseInt(currentSeconds % 60);
+                    let minutes = '' + parseInt(currentSeconds / 60);
+                    let hours = '' + parseInt(parseInt(currentSeconds / 60) / 60);
+
+                    return [
+                        hours.length < 2 ? '0' + hours : hours,
+                        minutes.length < 2 ? '0' + minutes : minutes,
+                        seconds.length < 2 ? '0' + seconds : seconds,
+                    ].join(":")
+                }
+            }
+
+            const timerHelper = new TimerHelper();
+            new TimerPage()
         },
     };
 
