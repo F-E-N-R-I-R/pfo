@@ -9,30 +9,19 @@
 </head>
 <body>
 <div class="container">
-    <div class="slider">
-        <div class="controlArea">
-            <div class="controlBtn" id= "sliderGoBack"></div>
-            <div class="controlBtn" id= "sliderStop"></div>
-            <div class="controlBtn" id= "sliderGoForward"></div>
+    <div class="slider-container">
+        <div class="slider-wrapper">
+            <div class="left"></div>
+            <div class="right"></div>
+            <ul class="slider">
+                <li class="slide"></li>
+                <li class="slide"></li>
+                <li class="slide"></li>
+                <li class="slide"></li>
+                <li class="slide"></li>
+            </ul>
         </div>
-        <div class="slides activeSlide">
-            <div class="red"></div>
-        </div>
-        <div class="slides">
-            <div class="blue"></div>
-        </div>
-        <div class="slides">
-            <div class="green"></div>
-        </div>
-        <div class="slides">
-            <div class="yellow"></div>
-        </div>
-        <ul class="dots">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+        <ul class="pagination"></ul>
     </div>
 </div>
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>

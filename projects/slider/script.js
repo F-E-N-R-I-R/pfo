@@ -1,6 +1,119 @@
 $(function () {
     const versions = {
-        PROTOTYPE() {},
+        PROTOTYPE() {
+            const Slider = function() {
+                this.init();
+            };
+
+            Slider.prototype = {
+                settings: {
+                    timeout: 1000,
+                    slideWidth: 500,
+                },
+                slide: 0,
+                direction: 1,
+                timer: null,
+                animateEnd: true,
+                init() {
+                    this.container = $('.container');
+                    this.lent = this.container.find('.slider');
+                    this.pagination = this.container.find('.pagination');
+                    this.slides = this.lent.find('li');
+                    this.MAX_SLIDES = this.slides.length;
+                    this.next();
+                    this._generatePagination();
+                    this._bindEvents();
+                },
+
+                next() {
+                    this.timer = setTimeout(() => {
+                        this.slide = this._getNext();
+
+                        this.goTo(this.slide);
+                    }, this.settings.timeout);
+                },
+
+                goTo(index) {
+                    this.lent.animate(
+                        { 'marginLeft': - this.settings.slideWidth * index },
+                        this.settings.timeout,
+                        () => {
+                            this.animateEnd = true;
+                            this._setActive();
+                            this.next()
+                        }
+                    );
+                },
+
+                _setActive() {
+                    const pagers = this.pagination.find('li');
+
+                    pagers.removeClass('active');
+                    pagers.eq(this.slide).addClass('active');
+                },
+
+                _generatePagination() {
+                    for (let i = 0; i < this.MAX_SLIDES; i++) {
+                        this.pagination.append(
+                            $('<li>', {
+                                text: i + 1,
+                                'data-index': i ,
+                                class: i === 0 ? 'active' : '',
+                            })
+                        );
+                    }
+                },
+
+                _getNext() {
+                    const nextIndex = this.slide + this.direction;
+
+                    if (nextIndex >= this.MAX_SLIDES) {
+                        return 0;
+                    } else if (nextIndex < 0) {
+                        return this.MAX_SLIDES -1;
+                    }
+
+                    return nextIndex;
+                },
+
+                _bindEvents() {
+                    this.container.on('click', '.pagination li', (e) => {
+                        const index = $(e.target).data('index');
+                        this._stop();
+                        this.direction = this.slide > index ? -1 : 1;
+                        this.slide = index;
+                        this.goTo(index);
+                    });
+
+                    this.container.on('click', '.left', () => {
+                        if (this.animateEnd) {
+                            this.animateEnd = false;
+                            this._stop();
+                            this.direction = -1;
+                            this.slide = this._getNext();
+                            this.goTo(this.slide);
+                        }
+                    });
+
+                    this.container.on('click', '.right', () => {
+                        if (this.animateEnd) {
+                            this.animateEnd = false;
+                            this._stop();
+                            this.direction = 1;
+                            this.slide = this._getNext();
+                            this.goTo(this.slide);
+                        }
+                    });
+                },
+
+                _stop() {
+                    clearTimeout(this.timer);
+                    this.lent.stop();
+                }
+            };
+
+            new Slider();
+        },
 
         ES5() {},
 
@@ -84,5 +197,5 @@ $(function () {
         },
     };
 
-    versions.RAW();
+    versions.PROTOTYPE();
 });
