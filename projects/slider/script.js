@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     const versions = {
         PROTOTYPE() {
             const Slider = function() {
@@ -35,7 +35,7 @@ $(function () {
 
                 goTo(index) {
                     this.lent.animate(
-                        { 'marginLeft': - this.settings.slideWidth * index },
+                        { 'marginLeft': -this.settings.slideWidth * index },
                         this.settings.timeout,
                         () => {
                             this.animateEnd = true;
@@ -57,7 +57,7 @@ $(function () {
                         this.pagination.append(
                             $('<li>', {
                                 text: i + 1,
-                                'data-index': i ,
+                                'data-index': i,
                                 class: i === 0 ? 'active' : '',
                             })
                         );
@@ -70,7 +70,7 @@ $(function () {
                     if (nextIndex >= this.MAX_SLIDES) {
                         return 0;
                     } else if (nextIndex < 0) {
-                        return this.MAX_SLIDES -1;
+                        return this.MAX_SLIDES - 1;
                     }
 
                     return nextIndex;
@@ -104,6 +104,12 @@ $(function () {
                             this.goTo(this.slide);
                         }
                     });
+
+                    this.container.on('click', '.stop', () => {
+                        if (this.animateEnd) {
+                            this._stop();
+                        }
+                    });
                 },
 
                 _stop() {
@@ -115,87 +121,247 @@ $(function () {
             new Slider();
         },
 
-        ES5() {},
-
-        ES6() {},
-
-        RAW() {
-            const slider =$('.slider');
-            const dots = $('.dots').children();
-            const slides = $('.slides');
-            let i = 0;
-            let sliderParam = 1;
-            dots.filter(dots[0]).css('background-color', '#ffffff');
-
-            let sliderTick = () => {
-                if (sliderParam === 1 ) {
-                    sliderGoForward()
-                }
-                if (sliderParam === -1) {
-                    sliderGoBack()
-                }
-                if (sliderParam === 0) {
-                    return
-                }
-                slides.removeClass('activeSlide').filter(slides[i]).toggleClass('activeSlide');
-                dots.css('background-color', '#000000');
-                dots.filter(dots[i]).css('background-color', '#ffffff');
+        ES5() {
+            var settings = {
+                timeout: 1000,
+                slideWidth: 500,
             };
+            var slide = 0;
+            var direction = 1;
+            var timer = null;
+            var animateEnd = true;
+            var isStoped = false;
 
-            let sliderReGo = (funk) => {
-                setInterval(funk, 3000)
-            };
+            var container = $('.container');
+            var lent = container.find('.slider');
+            var pagination = container.find('.pagination');
+            var slides = lent.find('li');
+            var MAX_SLIDES = slides.length;
 
+            next();
+            generatePagination();
+            bindEvents();
 
+            function next() {
+                timer = setTimeout(() => {
+                    slide = getNext();
 
-            let onClickDots = () =>  {
-                let indexElem = dots.index(event.target);
-                i = indexElem;
-                slides.removeClass('activeSlide').filter(slides[indexElem]).toggleClass('activeSlide');
-                dots.css('background-color', '#000000');
-                dots.filter(dots[indexElem]).css('background-color', '#ffffff');
+                    goTo(slide);
+                }, settings.timeout);
+            }
 
-            };
+            function goTo(index) {
+                lent.animate(
+                    { 'marginLeft': -settings.slideWidth * index },
+                    settings.timeout,
+                    function() {
+                        animateEnd = true;
+                        setActive();
+                        if (!isStoped){
+                            next();
+                        }
+                    }
+                );
+            }
 
-            let sliderGoBack = () => {
-                if ( i > 0 ) {
-                    --i
+            function setActive() {
+                var pagers = pagination.find('li');
+
+                pagers.removeClass('active');
+                pagers.eq(slide).addClass('active');
+            }
+
+            function generatePagination() {
+                for (var i = 0; i < MAX_SLIDES; i++) {
+                    pagination.append(
+                        $('<li>', {
+                            text: i + 1,
+                            'data-index': i,
+                            class: i === 0 ? 'active' : '',
+                        })
+                    );
                 }
-                else {
-                    i = slides.length - 1;
+            }
+
+            function getNext() {
+                var nextIndex = slide + direction;
+
+                if (nextIndex >= MAX_SLIDES) {
+                    return 0;
+                } else if (nextIndex < 0) {
+                    return MAX_SLIDES - 1;
                 }
 
+                return nextIndex;
+            }
 
-            };
+            function bindEvents() {
+                container.on('click', '.pagination li', function(e) {
+                    var index = $(e.target).data('index');
+                    stop();
+                    direction = slide > index ? -1 : 1;
+                    slide = index;
+                    goTo(index);
+                });
 
-            let sliderGoForward = () => {
-                if ( Math.abs(i) < slides.length - 1) {
-                    i++
-                }
-                else {
-                    i = 0;
-                }
-            };
+                container.on('click', '.left', function() {
+                    if (animateEnd) {
+                        animateEnd = false;
+                        stop();
+                        direction = -1;
+                        slide = getNext();
+                        goTo(slide);
+                    }
+                });
 
-            let onClickSlider = () => {
-                if (event.target.id === 'sliderGoBack'){
-                    sliderParam = -1;
-                }
-                if (event.target.id === 'sliderGoForward'){
-                    sliderParam = 1;
-                }
-                if (event.target.id === 'sliderStop'){
-                    sliderParam = 0;
-                }
+                container.on('click', '.right', function() {
+                    if (animateEnd) {
+                        animateEnd = false;
+                        stop();
+                        direction = 1;
+                        slide = getNext();
+                        goTo(slide);
+                    }
+                });
 
+                container.on('click', '.slide', function() {
+                    if (isStoped) {
+                        next();
+                    } else {
+                        clearTimeout(timer);
+                    }
 
-            };
-            sliderReGo(sliderTick);
+                    isStoped = !isStoped;
+                });
+            }
 
-            dots.click( () =>{ onClickDots ()});
-            slider.click( () =>{ onClickSlider ()});
+            function stop() {
+                clearTimeout(timer);
+                lent.stop();
+            }
         },
+
+        ES6() {
+
+            class Slider {
+                settings = {
+                    timeout: 1000,
+                    slideWidth: 500,
+                };
+                slide = 0;
+                direction = 1;
+                timer = null;
+                animateEnd = true;
+
+                constructor() {
+                    this.container = $('.container');
+                    this.lent = this.container.find('.slider');
+                    this.pagination = this.container.find('.pagination');
+                    this.slides = this.lent.find('li');
+                    this.MAX_SLIDES = this.slides.length;
+
+                    this.next();
+                    this._generatePagination();
+                    this._bindEvents();
+                };
+
+                next() {
+                    this.timer = setTimeout(() => {
+                        this.slide = this._getNext();
+
+                        this.goTo(this.slide);
+                    }, this.settings.timeout);
+                };
+
+                goTo(index) {
+                    this.lent.animate(
+                        { 'marginLeft': -this.settings.slideWidth * index },
+                        this.settings.timeout,
+                        () => {
+                            this.animateEnd = true;
+                            this._setActive();
+                            this.next()
+                        }
+                    );
+                };
+
+                _setActive() {
+                    const pagers = this.pagination.find('li');
+
+                    pagers.removeClass('active');
+                    pagers.eq(this.slide).addClass('active');
+                };
+
+                _generatePagination() {
+                    for (let i = 0; i < this.MAX_SLIDES; i++) {
+                        this.pagination.append(
+                            $('<li>', {
+                                text: i + 1,
+                                'data-index': i,
+                                class: i === 0 ? 'active' : '',
+                            })
+                        );
+                    }
+                };
+
+                _getNext() {
+                    const nextIndex = this.slide + this.direction;
+
+                    if (nextIndex >= this.MAX_SLIDES) {
+                        return 0;
+                    } else if (nextIndex < 0) {
+                        return this.MAX_SLIDES - 1;
+                    }
+
+                    return nextIndex;
+                };
+
+                _bindEvents() {
+                    this.container.on('click', '.pagination li', (e) => {
+                        const index = $(e.target).data('index');
+                        this._stop();
+                        this.direction = this.slide > index ? -1 : 1;
+                        this.slide = index;
+                        this.goTo(index);
+                    });
+
+                    this.container.on('click', '.left', () => {
+                        if (this.animateEnd) {
+                            this.animateEnd = false;
+                            this._stop();
+                            this.direction = -1;
+                            this.slide = this._getNext();
+                            this.goTo(this.slide);
+                        }
+                    });
+
+                    this.container.on('click', '.right', () => {
+                        if (this.animateEnd) {
+                            this.animateEnd = false;
+                            this._stop();
+                            this.direction = 1;
+                            this.slide = this._getNext();
+                            this.goTo(this.slide);
+                        }
+                    });
+
+                    this.container.on('click', '.stop', () => {
+                        if (this.animateEnd) {
+                            this._stop();
+                        }
+                    });
+                };
+
+                _stop() {
+                    clearTimeout(this.timer);
+                    this.lent.stop();
+                }
+            }
+
+            new Slider();
+        },
+
     };
 
-    versions.PROTOTYPE();
+    versions.ES5();
 });
