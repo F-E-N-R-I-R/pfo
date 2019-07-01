@@ -14,6 +14,8 @@ $(function() {
                 direction: 1,
                 timer: null,
                 animateEnd: true,
+                isStoped: false,
+
                 init() {
                     this.container = $('.container');
                     this.lent = this.container.find('.slider');
@@ -40,7 +42,9 @@ $(function() {
                         () => {
                             this.animateEnd = true;
                             this._setActive();
-                            this.next()
+                            if (!this.isStoped){
+                                this.next();
+                            }
                         }
                     );
                 },
@@ -105,10 +109,14 @@ $(function() {
                         }
                     });
 
-                    this.container.on('click', '.stop', () => {
-                        if (this.animateEnd) {
-                            this._stop();
+                    this.container.on('click', '.slide', () => {
+                        if (this.isStoped) {
+                            this.next();
+                        } else {
+                            clearTimeout(this.timer);
                         }
+
+                        this.isStoped = !this.isStoped;
                     });
                 },
 
@@ -252,6 +260,7 @@ $(function() {
                 direction = 1;
                 timer = null;
                 animateEnd = true;
+                isStoped = false;
 
                 constructor() {
                     this.container = $('.container');
@@ -280,7 +289,9 @@ $(function() {
                         () => {
                             this.animateEnd = true;
                             this._setActive();
-                            this.next()
+                            if (!this.isStoped){
+                                this.next();
+                            }
                         }
                     );
                 };
@@ -345,10 +356,14 @@ $(function() {
                         }
                     });
 
-                    this.container.on('click', '.stop', () => {
-                        if (this.animateEnd) {
-                            this._stop();
+                    this.container.on('click', '.slide', () => {
+                        if (this.isStoped) {
+                            this.next();
+                        } else {
+                            clearTimeout(this.timer);
                         }
+
+                        this.isStoped = !this.isStoped;
                     });
                 };
 
@@ -363,5 +378,5 @@ $(function() {
 
     };
 
-    versions.ES5();
+    versions.ES6();
 });
