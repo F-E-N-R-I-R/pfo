@@ -1,21 +1,7 @@
-span.text-error {
-    top: 0;
-    left: 0;
-    color: #ff0700;
-    font-size: 10px;
-    line-height: 10px;
-}
-
-img{
-    width: 100%;
-    height: auto;
-}
-
-.registrationForm {
+.form {
     width: 30%;
     margin-bottom: 20px;
 }
-
 
 .cardInfo {
     color: cadetblue;
@@ -28,6 +14,7 @@ img{
 .error {
     border: 1px solid #ff0700;
  }
+
 .success {
     border: 1px solid #39f345;
  }
@@ -39,16 +26,11 @@ img{
     border-radius: 42px;
     font-weight: bold;
 }
-.cardContainer {
+
+.cardsStacked {
     display: flex;
     padding: 25px;
     max-width: 100%;
     height: 300px;
     background-size: 100% 100%;
 }
-#avatar{
-    opacity: 0;
-    position: relative;
-    z-index: 1;
-}
-
