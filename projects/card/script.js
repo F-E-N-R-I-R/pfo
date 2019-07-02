@@ -34,11 +34,10 @@ $(function () {
 
                 _bindEvents() {
                     this.elementForm.on('submit',(e) => {
-                        if(this.validator.valid(this._getValue())) {
-                            console.log('valid');
-                            this.container.trigger('mediator:create', this._getValue());
-                        }
                         e.preventDefault();
+                        if(this.validator.valid(this._getValue())) {
+                            this.container.trigger('mediator:create', this._getValue());
+                        };
                     });
                 },
 
@@ -65,8 +64,16 @@ $(function () {
 
                 addCard() {
                     const value = $('<div>', {
-                        class: 'card-value ' + this.options.id,
-                        text: this.options.name,
+                        class: 'card ' + this.options.id,
+                        html:
+                            $('<div>', {
+                                class: 'card-body',
+                                html:
+                                    $('<h5>', { class: 'card-title', text: 'Name: ' + this.options.name}).get(0).outerHTML+
+                                    $('<p>', { class: 'card-text', text: 'Phone: ' + this.options.phone}).get(0).outerHTML+
+                                    $('<p>', { class: 'card-text', text: 'Email: ' + this.options.mail}).get(0).outerHTML+
+                                    $('<p>', { class: 'card-text', text: 'Age: ' + this.options.age}).get(0).outerHTML
+                            }),
                     });
 
                     this.cardsContainer.append(value);
@@ -84,7 +91,6 @@ $(function () {
                 _bindEvents() {
                     this.container.on('mediator:create', (e, options) => {
                         this.cards[options.id] = options;
-                        console.log(this.cards);
                         new Card(options);
                     });
                 },
@@ -92,16 +98,21 @@ $(function () {
 
             Validator.prototype = {
                 init() {
-                    this.container = $('.container');
-
+                    this.validationRules = {
+                        required(str) {
+                            return str.length ? null : 'Req';
+                        },
+                    };
+                    this.validationComposer = {
+                        name(str) {
+                            this.validationRules.required(str);
+                        },
+                    };
                 },
 
                 valid(elementsForm) {
-                    if (elementsForm.name !== "" && elementsForm.phone !== "") {
-                        return true;
-                    }else {
-                        return false;
-                    }
+                    console.log(this.validationComposer.name(elementsForm.name));
+                    this.validationComposer.name(elementsForm.name.val());
                 },
 
             };
