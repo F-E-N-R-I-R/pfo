@@ -26,8 +26,8 @@ $(function () {
                     this.phoneInputElement = this.elementForm.find('#phone');
                     this.mailInputElement = this.elementForm.find('#mail');
                     this.passInputElement = this.elementForm.find('#pass');
+                    this.confirmPassInputElement = this.elementForm.find('#confirmPass');
                     this.ageInputElement = this.elementForm.find('#age');
-                    this.btnSubmit = this.elementForm.find('.btnSub');
 
                     this._bindEvents();
                 },
@@ -35,6 +35,7 @@ $(function () {
                 _bindEvents() {
                     this.elementForm.on('submit',(e) => {
                         if(this.validator.valid(this._getValue())) {
+                            console.log('valid');
                             this.container.trigger('mediator:create', this._getValue());
                         }
                         e.preventDefault();
@@ -47,6 +48,7 @@ $(function () {
                         phone: this.phoneInputElement.val(),
                         mail: this.mailInputElement.val(),
                         password: this.passInputElement.val(),
+                        confirmPassword: this.confirmPassInputElement.val(),
                         age: this.ageInputElement.val(),
                         id: Date.now(),
                     };
@@ -56,8 +58,18 @@ $(function () {
             Card.prototype = {
                 init(options) {
                     this.options = options;
-                    this.container = $('.cardsStacked')
+                    this.cardsContainer = $('.cardsStacked');
 
+                    this.addCard();
+                },
+
+                addCard() {
+                    const value = $('<div>', {
+                        class: 'card-value ' + this.options.id,
+                        text: this.options.name,
+                    });
+
+                    this.cardsContainer.append(value);
                 },
             };
 
@@ -71,7 +83,9 @@ $(function () {
 
                 _bindEvents() {
                     this.container.on('mediator:create', (e, options) => {
-                        this.cards[options.id].push(options);
+                        this.cards[options.id] = options;
+                        console.log(this.cards);
+                        new Card(options);
                     });
                 },
             };
