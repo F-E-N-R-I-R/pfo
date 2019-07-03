@@ -13,8 +13,15 @@ $(function () {
                 this.init();
             };
 
-            const Validator = function () {
-                this.init();
+            const Validator = function (options) {
+                this.init(options);
+            };
+
+            const Rules = function () {
+            };
+
+            const Composer = function (options) {
+                this.init(options);
             };
 
             Form.prototype = {
@@ -35,7 +42,7 @@ $(function () {
                 _bindEvents() {
                     this.elementForm.on('submit',(e) => {
                         e.preventDefault();
-                        if(this.validator.valid(this._getValue())) {
+                        if(!this.validator.valid(this._getValue())) {
                             this.container.trigger('mediator:create', this._getValue());
                         };
                     });
@@ -96,28 +103,33 @@ $(function () {
                 },
             };
 
+            Rules.prototype = {
+                required(str) {
+                    return str.length ? null : 'Req';
+                },
+            };
+
+            Composer.prototype = {
+                init(options) {
+                    this.rules = options.rules;
+                },
+                name(str) {
+                    return this.rules.required(str);
+                },
+            };
+
             Validator.prototype = {
-                init() {
-                    this.validationRules = {
-                        required(str) {
-                            return str.length ? null : 'Req';
-                        },
-                    };
-                    this.validationComposer = {
-                        name(str) {
-                            this.validationRules.required(str);
-                        },
-                    };
+                init(options) {
+                    this.composer = options.composer;
                 },
 
                 valid(elementsForm) {
-                    console.log(this.validationComposer.name(elementsForm.name));
-                    this.validationComposer.name(elementsForm.name.val());
+                    return this.composer.name(elementsForm.name);
                 },
 
-            };
+            },
 
-            new Form({validator: new Validator()});
+            new Form({ validator: new Validator({ composer: new Composer({ rules: new Rules() }) }) });
             new Mediator();
         },
 
