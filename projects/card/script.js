@@ -1,7 +1,11 @@
-$(function () {
+$(function() {
     const versions = {
         PROTOTYPE() {
-            const Form = function (options) {
+            const PageComponent = function() {
+                this.init();
+            };
+
+            const Form = function(options) {
                 this.init(options);
             };
 
@@ -9,42 +13,35 @@ $(function () {
                 this.init(options);
             };
 
-            const Mediator = function () {
+            const Validator = function() {
                 this.init();
-            };
-
-            const Validator = function (options) {
-                this.init(options);
-            };
-
-            const Rules = function () {
-            };
-
-            const Composer = function (options) {
-                this.init(options);
             };
 
             Form.prototype = {
                 init(options) {
                     this.validator = options.validator;
-                    this.container = $('.container');
-                    this.elementForm = this.container.find('.form');
-                    // this.nameInputElement = this.elementForm.find('#name');
-                    // this.phoneInputElement = this.elementForm.find('#phone');
-                    // this.mailInputElement = this.elementForm.find('#mail');
-                    // this.passInputElement = this.elementForm.find('#pass');
-                    // this.confirmPassInputElement = this.elementForm.find('#confirmPass');
-                    // this.ageInputElement = this.elementForm.find('#age');
+                    this.triggerContainer = options.triggerContainer;
+                    this.elementForm = this.triggerContainer.find('.form');
 
                     this._bindEvents();
                 },
 
                 _bindEvents() {
-                    this.elementForm.on('submit',(e) => {
+                    this.elementForm.on('submit', (e) => {
                         e.preventDefault();
-                        if(!this.validator.validation(this.elementForm)) {
-                            this.container.trigger('mediator:create', this.validator._getValue(this.elementForm));
-                        };
+
+                        if (this.validator.isValid(this.elementForm)) {
+                            this.triggerContainer.trigger(
+                                'mediator:create',
+                                this.elementForm
+                                    .serializeArray()
+                                    .reduce((res, pair) => {
+                                        res[pair.name] = pair.value;
+                                        return res;
+                                    }, {}),
+                            );
+                            this.elementForm.trigger('reset');
+                        }
                     });
                 },
             };
@@ -52,103 +49,134 @@ $(function () {
             Card.prototype = {
                 init(options) {
                     this.options = options;
-                    this.cardsContainer = $('.cardsStacked');
-
-                    this.addCard();
+                    this.card = this.getCard();
                 },
 
-                addCard() {
-                    const value = $('<div>', {
+                getCard() {
+                    return $('<div>', {
                         class: 'card ' + this.options.id,
                         html:
                             $('<div>', {
                                 class: 'card-body',
                                 html:
-                                    $('<h4>', { class: 'card-title', text: 'Name: ' + this.options.name}).get(0).outerHTML+
-                                    $('<p>', { class: 'card-text', text: 'Phone: ' + this.options.phone}).get(0).outerHTML+
-                                    $('<p>', { class: 'card-text', text: 'Email: ' + this.options.mail}).get(0).outerHTML+
-                                    $('<p>', { class: 'card-text', text: 'Age: ' + this.options.age}).get(0).outerHTML
+                                    $('<h4>', {
+                                        class: 'card-title',
+                                        text: 'Name: ' + this.options.name
+                                    }).get(0).outerHTML +
+                                    $('<p>', {
+                                        class: 'card-text',
+                                        text: 'Phone: ' + this.options.phone
+                                    }).get(0).outerHTML +
+                                    $('<p>', {
+                                        class: 'card-text',
+                                        text: 'Email: ' + this.options.mail
+                                    }).get(0).outerHTML +
+                                    $('<p>', { class: 'card-text', text: 'Age: ' + this.options.age }).get(0).outerHTML
                             }),
                     });
-
-                    this.cardsContainer.append(value);
                 },
             };
 
-            Mediator.prototype = {
+            PageComponent.prototype = {
                 cards: [],
                 init() {
                     this.container = $('.container');
-
+                    this.cardsContainer = $('.cardsStacked');
+                    new Form({
+                        validator: new Validator(),
+                        triggerContainer: this.container,
+                    });
                     this._bindEvents();
                 },
 
                 _bindEvents() {
                     this.container.on('mediator:create', (e, options) => {
-                        this.cards[options.id] = options;
-                        new Card(options);
+                        this.cards[options.id] = new Card(options);
+                        this.cardsContainer.append(this.cards[options.id].card);
                     });
                 },
-            };
-
-            Rules.prototype = {
-                mailPattern: /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/,
-                required(str) {
-                    return str.length ? null : 'Req';
-                },
-                mail(str) {
-                    return this.mailPattern.test(str) ? null : 'Email';
-                },
-            };
-
-            Composer.prototype = {
-                init(options) {
-                    this.rules = options.rules;
-                },
-                name(str) {
-                    return this.rules.required(str);
-                },
-                mail(str) {
-                    return (this.rules.required(str) || this.rules.mail(str));
-                }
             };
 
             Validator.prototype = {
-                init(options) {
-                    this.composer = options.composer;
+                init() {
+                    this._initDependency();
                 },
 
-                validation(form) {
-                    $.each(form.elements, () => {
-                        switch(form) {
-                            case form.find('#name') : return this.composer.name(this._getValue(form).name);
-                            case form.find('#mail') : return this.composer.mail(this._getValue(form).mail);
-                            default : return true;
-                        }
-                    });
-                },
-
-                _getValue(form) {
-                    return {
-                        name: form.find('#name').val(),
-                        phone: form.find('#phone').val(),
-                        mail: form.find('#mail').val(),
-                        password: form.find('#pass').val(),
-                        confirmPassword: form.find('#confirmPass').val(),
-                        age: form.find('#age').val(),
-                        id: Date.now(),
+                _initDependency() {
+                    const Rules = function() {};
+                    const Highlighter = function() {};
+                    const Composer = function(options) {
+                        this.init(options);
                     };
+
+                    Rules.prototype = {
+                        mailPattern: /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/,
+                        required(str) {
+                            return str.length ? null : 'This field is required.';
+                        },
+                        mail(str) {
+                            return this.mailPattern.test(str) ? null : 'Should be valid Email';
+                        },
+                    };
+
+                    Highlighter.prototype = {
+                        highlight(input, error) {
+                            input.next('.error-message').remove();
+                            error ? this.onError(input, error) : this.onSuccess(input);
+                        },
+
+                        onError(input, error) {
+                            input.addClass('error');
+                            $('<p>', { class: `error-message`, text: error }).insertAfter(input);
+                        },
+
+                        onSuccess(input) {
+                            input.removeClass('error');
+                        }
+                    };
+
+                    Composer.prototype = {
+                        init(options) {
+                            this.rules = options.rules;
+                        },
+                        name(str) {
+                            return this.rules.required(str);
+                        },
+                        mail(str) {
+                            return (this.rules.required(str) || this.rules.mail(str));
+                        }
+                    };
+
+                    this.composer = new Composer({ rules: new Rules() });
+                    this.highlighter = new Highlighter();
                 },
 
-            },
+                isValid(form) {
+                    return !form
+                        .serializeArray()
+                        .map(data => {
+                            const input = form.find(`[name=${data.name}]`);
+                            const rule = this.composer[data.name];
 
-            new Form({ validator: new Validator({ composer: new Composer({ rules: new Rules() }) }) });
-            new Mediator();
+                            if (rule && input.length) {
+                                const error = rule.bind(this.composer)(data.value || '');
+
+                                this.highlighter.highlight(input, error);
+                                return error;
+                            }
+                        })
+                        .find(err => !!err);
+                },
+            };
+
+            new PageComponent();
         },
 
-        ES5() {},
+        ES5() {
+        },
 
-        ES6() {},
+        ES6() {
+        },
 
         // RAW() {
         //     let storage = {

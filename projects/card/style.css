@@ -27,3 +27,7 @@
     height: 280px;
     background-size: 100% 100%;
 }
+
+.error-message {
+    color: #ff0700;
+}
