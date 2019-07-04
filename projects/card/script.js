@@ -29,12 +29,12 @@ $(function () {
                     this.validator = options.validator;
                     this.container = $('.container');
                     this.elementForm = this.container.find('.form');
-                    this.nameInputElement = this.elementForm.find('#name');
-                    this.phoneInputElement = this.elementForm.find('#phone');
-                    this.mailInputElement = this.elementForm.find('#mail');
-                    this.passInputElement = this.elementForm.find('#pass');
-                    this.confirmPassInputElement = this.elementForm.find('#confirmPass');
-                    this.ageInputElement = this.elementForm.find('#age');
+                    // this.nameInputElement = this.elementForm.find('#name');
+                    // this.phoneInputElement = this.elementForm.find('#phone');
+                    // this.mailInputElement = this.elementForm.find('#mail');
+                    // this.passInputElement = this.elementForm.find('#pass');
+                    // this.confirmPassInputElement = this.elementForm.find('#confirmPass');
+                    // this.ageInputElement = this.elementForm.find('#age');
 
                     this._bindEvents();
                 },
@@ -42,22 +42,10 @@ $(function () {
                 _bindEvents() {
                     this.elementForm.on('submit',(e) => {
                         e.preventDefault();
-                        if(!this.validator.valid(this._getValue())) {
-                            this.container.trigger('mediator:create', this._getValue());
+                        if(!this.validator.validation(this.elementForm)) {
+                            this.container.trigger('mediator:create', this.validator._getValue(this.elementForm));
                         };
                     });
-                },
-
-                _getValue() {
-                    return {
-                        name: this.nameInputElement.val(),
-                        phone: this.phoneInputElement.val(),
-                        mail: this.mailInputElement.val(),
-                        password: this.passInputElement.val(),
-                        confirmPassword: this.confirmPassInputElement.val(),
-                        age: this.ageInputElement.val(),
-                        id: Date.now(),
-                    };
                 },
             };
 
@@ -76,7 +64,7 @@ $(function () {
                             $('<div>', {
                                 class: 'card-body',
                                 html:
-                                    $('<h5>', { class: 'card-title', text: 'Name: ' + this.options.name}).get(0).outerHTML+
+                                    $('<h4>', { class: 'card-title', text: 'Name: ' + this.options.name}).get(0).outerHTML+
                                     $('<p>', { class: 'card-text', text: 'Phone: ' + this.options.phone}).get(0).outerHTML+
                                     $('<p>', { class: 'card-text', text: 'Email: ' + this.options.mail}).get(0).outerHTML+
                                     $('<p>', { class: 'card-text', text: 'Age: ' + this.options.age}).get(0).outerHTML
@@ -104,8 +92,12 @@ $(function () {
             };
 
             Rules.prototype = {
+                mailPattern: /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/,
                 required(str) {
                     return str.length ? null : 'Req';
+                },
+                mail(str) {
+                    return this.mailPattern.test(str) ? null : 'Email';
                 },
             };
 
@@ -116,6 +108,9 @@ $(function () {
                 name(str) {
                     return this.rules.required(str);
                 },
+                mail(str) {
+                    return (this.rules.required(str) || this.rules.mail(str));
+                }
             };
 
             Validator.prototype = {
@@ -123,8 +118,26 @@ $(function () {
                     this.composer = options.composer;
                 },
 
-                valid(elementsForm) {
-                    return this.composer.name(elementsForm.name);
+                validation(form) {
+                    $.each(form.elements, () => {
+                        switch(form) {
+                            case form.find('#name') : return this.composer.name(this._getValue(form).name);
+                            case form.find('#mail') : return this.composer.mail(this._getValue(form).mail);
+                            default : return true;
+                        }
+                    });
+                },
+
+                _getValue(form) {
+                    return {
+                        name: form.find('#name').val(),
+                        phone: form.find('#phone').val(),
+                        mail: form.find('#mail').val(),
+                        password: form.find('#pass').val(),
+                        confirmPassword: form.find('#confirmPass').val(),
+                        age: form.find('#age').val(),
+                        id: Date.now(),
+                    };
                 },
 
             },
