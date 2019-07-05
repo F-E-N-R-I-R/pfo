@@ -27,22 +27,26 @@ $(function() {
                 },
 
                 _bindEvents() {
-                    this.elementForm.on('submit', (e) => {
-                        e.preventDefault();
+                    this.elementForm
+                        .on('submit', (e) => {
+                            e.preventDefault();
 
-                        if (this.validator.isValid(this.elementForm)) {
-                            this.triggerContainer.trigger(
-                                'mediator:create',
-                                this.elementForm
-                                    .serializeArray()
-                                    .reduce((res, pair) => {
-                                        res[pair.name] = pair.value;
-                                        return res;
-                                    }, {}),
-                            );
-                            this.elementForm.trigger('reset');
-                        }
-                    });
+                            if (this.validator.isValid(this.elementForm)) {
+                                this.triggerContainer.trigger(
+                                    'mediator:create',
+                                    this.elementForm
+                                        .serializeArray()
+                                        .reduce((res, pair) => {
+                                            res[pair.name] = pair.value;
+                                            return res;
+                                        }, {}),
+                                );
+                                this.elementForm.trigger('reset');
+                            }
+                        })
+                        .on('keyup', () => {
+                            this.validator.isValid(this.elementForm);
+                        });
                 },
             };
 
@@ -113,21 +117,31 @@ $(function() {
                         regEx: {
                             phonePattern: /^\+?(38)?(\d{10,11})$/,
                             mailPattern: /^(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$/,
+                            passwordPattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
                         },
                         required(str) {
                             return str.length ? null : 'This field is required';
                         },
                         minLength(str) {
-                            return str.length <= 2 ? null : 'Minimum Name length 2 characters';
+                            return str.length >= 2 ? null : 'Minimum length 2 characters';
                         },
                         maxLength(str) {
-                            return str.length >= 128 ? null : 'Maximum Name length 128 characters';
+                            return str.length <= 128 ? null : 'Maximum length 128 characters';
                         },
                         phone(str) {
                             return this.regEx.phonePattern.test(str) ? null : 'Should be valid Phone';
                         },
                         mail(str) {
                             return this.regEx.mailPattern.test(str) ? null : 'Should be valid Email';
+                        },
+                        password(str) {
+                            return this.regEx.passwordPattern.test(str) ? null : 'Should be valid Password';
+                        },
+                        // confirm_password(str, pass) {
+                        //     return str === pass ? null : 'These passwords don\'t match';
+                        // },
+                        age(num) {
+                            return (num >= 0 && num <= 100) ? null : 'Should be from 0 to 100 years';
                         },
                     };
 
@@ -159,6 +173,15 @@ $(function() {
                         },
                         mail(str) {
                             return (this.rules.required(str) || this.rules.mail(str));
+                        },
+                        password(str) {
+                            return (this.rules.required(str) || this.rules.password(str));
+                        },
+                        // confirm_password(str, pass) {
+                        //     return (this.rules.required(str) || this.rules.confirm_password(str, pass));
+                        // },
+                        age(num) {
+                            return this.rules.age(num);
                         }
                     };
 
@@ -192,159 +215,6 @@ $(function() {
 
         ES6() {
         },
-
-        // RAW() {
-        //     let storage = {
-        //         cards: []
-        //     };
-        //
-        //     const CardsProj = function() { this.init(); };
-        //
-        //     CardsProj.prototype = {
-        //         init() {
-        //             this.container = $('.container');
-        //             this.registrationForm = this.container.find('.registrationForm');
-        //             this.nameInput = this.registrationForm.find('#name');
-        //             this.phoneInput = this.registrationForm.find('#phone');
-        //             this.mailInput = this.registrationForm.find('#mail');
-        //             this.signInBtn = this.registrationForm.find('#signInBtn');
-        //             this.cardContainer = this.container.find('.cardContainer');
-        //             this.forms = this.container.find('.form-group');
-        //             this.addFileBtn = this.container.find('#addFileBtn');
-        //             this.getPhotoInput = this.container.find('#avatar');
-        //             this.blah = this.container.find('#blah');
-        //
-        //             this._bindEvents()
-        //         },
-        //
-        //         _bindEvents(){
-        //             this.addFileBtn.on('click',() => this.getPhotoInput.click());
-        //             this.getPhotoInput.on('change', () => this.onChangeGetPhotoInput(this.getPhotoInput));
-        //             this.signInBtn.on('click',() => this.onClickSignInBtn());
-        //
-        //         },
-        //
-        //         onChangeGetPhotoInput(){
-        //             this.src = URL.createObjectURL(event.target.files[0]);
-        //         },
-        //
-        //         onClickSignInBtn(){
-        //             const src = this.src;
-        //             const name = this.nameInput;
-        //             const phone = this.phoneInput;
-        //             const mail = this.mailInput;
-        //             const registrationForm = this.blockContainer;
-        //             const forms = this.forms;
-        //             const cards = new Cards(name, phone, mail, registrationForm, forms, src)
-        //
-        //
-        //         },
-        //
-        //
-        //     };
-        //
-        //     new CardsProj();
-        //     const Cards = function (name, phone, mail, registrationForm, forms, src) {
-        //         this.src = src;
-        //         this.name = name;
-        //         this.phone = phone;
-        //         this.forms = forms;
-        //         this.mail = mail;
-        //         this.registrationForm = registrationForm;
-        //         this.validation()
-        //     };
-        //
-        //     Cards.prototype ={
-        //         addCards(){
-        //             let name = this.name.val();
-        //             let phone = this.phone.val();
-        //             let mail = this.mail.val();
-        //             let src = this.src;
-        //             const nameIs = $('<h4>',{ text: name});
-        //             // const photo =$('<img>',{src:src});
-        //             const number = $('<P>',{class:'cardInfo', text:'Number: ' + phone});
-        //             const mailIs = $('<P>',{class:'cardInfo', text:'E-mail: ' + mail});
-        //             const col = $('<div>',{class:'col-sm-6 col-md-4'});
-        //             const photo = $('<div>',{class:'cardContainer'});
-        //             photo.css('backgroundImage', 'url('+src+')');
-        //             const card = $('<div>',{class:'thumbnail'});
-        //             const cardInfo = $('<div>',{class:'caption'});
-        //             const cardContainer = $('.row')[0];
-        //
-        //             mailIs.appendTo(cardInfo);
-        //             number.appendTo(cardInfo);
-        //             photo.appendTo(card);
-        //             nameIs.appendTo(card);
-        //             cardInfo.appendTo(card);
-        //             card.appendTo(col);
-        //             col.appendTo(cardContainer);
-        //
-        //             this.forms.each(() => {
-        //                 // this.getPhotoInput.val("");
-        //                 // console.log(this.getPhotoInput.val());
-        //                 const input = this.forms.find('input');
-        //                 console.log(input.val);
-        //                 input.removeClass('error');
-        //                 input.val('')
-        //             });
-        //
-        //         },
-        //
-        //         validation(){
-        //             if ( !this.validator() ) {
-        //                 this.addCards()
-        //             }
-        //         },
-        //
-        //         validator (){
-        //             let errorMassage = $('.text-error');
-        //             errorMassage.remove();
-        //             const nameInput    = this.name;
-        //             let name = !nameInput.val();
-        //             const nameForm = this.name.parent()[0];
-        //             if ( name ) {
-        //                 name = true;
-        //                 const errSpanName = $('<span>',{class:'text-error for-name', text:'Поле name обязательно к заполнению'});
-        //                 errSpanName.appendTo(nameForm)
-        //                 nameInput.toggleClass('error', name );
-        //             } else { nameInput.toggleClass('success', name ); }
-        //
-        //             const regMail     = /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/;
-        //             const mailInput    = this.mail;
-        //             let email = !mailInput.val();
-        //             const emailForm = this.mail.parent()[0];
-        //
-        //             if ( email ) {
-        //                 const errSpanMail = $('<span>',{class:'text-error for-email', text: 'Поле e-mail обязательно к заполнению'});
-        //                 errSpanMail.appendTo(emailForm);
-        //                 mailInput.toggleClass('error', email );
-        //             } else if ( !regMail.test( mailInput.val() ) ) {
-        //                 email = true;
-        //                 const errSpanMail = $('<span>',{class:'text-error for-email', text: 'Вы указали недопустимый e-mail'});
-        //                 errSpanMail.appendTo(emailForm);
-        //                 mailInput.toggleClass('error', email );
-        //             }
-        //
-        //             const regPhone = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
-        //             const phoneInput    = this.phone;
-        //             let phone = !phoneInput.val();
-        //             const phoneForm = this.phone.parent()[0];
-        //
-        //             if ( phone ) {
-        //                 const errSpanPhone = $('<span>',{class:'text-error for-phone', text: 'Поле phone обязательно к заполнению'});
-        //                 errSpanPhone.appendTo(phoneForm);
-        //                 phoneInput.toggleClass('error', phone );
-        //             } else if ( !regPhone.test( phoneInput.val() ) ) {
-        //                 phone = true;
-        //                 const errSpanPhone = $('<span>',{class:'text-error for-phone', text: 'Вы указали недопустимый телефон'});
-        //                 errSpanPhone.appendTo(phoneForm);
-        //                 phoneInput.toggleClass('error', phone );
-        //             }
-        //
-        //             return ( email || name || phone)
-        //         }
-        //     };
-        // },
     };
 
     versions.PROTOTYPE();
