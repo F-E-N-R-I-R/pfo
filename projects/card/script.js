@@ -110,12 +110,24 @@ $(function() {
                     };
 
                     Rules.prototype = {
-                        mailPattern: /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/,
+                        regEx: {
+                            phonePattern: /^\+?(38)?(\d{10,11})$/,
+                            mailPattern: /^(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$/,
+                        },
                         required(str) {
-                            return str.length ? null : 'This field is required.';
+                            return str.length ? null : 'This field is required';
+                        },
+                        minLength(str) {
+                            return str.length <= 2 ? null : 'Minimum Name length 2 characters';
+                        },
+                        maxLength(str) {
+                            return str.length >= 128 ? null : 'Maximum Name length 128 characters';
+                        },
+                        phone(str) {
+                            return this.regEx.phonePattern.test(str) ? null : 'Should be valid Phone';
                         },
                         mail(str) {
-                            return this.mailPattern.test(str) ? null : 'Should be valid Email';
+                            return this.regEx.mailPattern.test(str) ? null : 'Should be valid Email';
                         },
                     };
 
@@ -140,7 +152,10 @@ $(function() {
                             this.rules = options.rules;
                         },
                         name(str) {
-                            return this.rules.required(str);
+                            return (this.rules.required(str) ||  this.rules.minLength(str) || this.rules.maxLength(str));
+                        },
+                        phone(str) {
+                            return (this.rules.required(str) || this.rules.phone(str));
                         },
                         mail(str) {
                             return (this.rules.required(str) || this.rules.mail(str));
