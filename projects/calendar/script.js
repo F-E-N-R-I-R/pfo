@@ -32,7 +32,7 @@ $(function () {
                     });
 
                     this.nameInputElement.on('keyup', (e) => {
-                        this.btnAddCalendar.prop('disabled', !this.nameInputElement.val().trim());
+                         this.btnAddCalendar.prop('disabled', !this.nameInputElement.val().trim());
                         if(e.code === 13) {
                             this._addCalendar();
                         }
