@@ -292,7 +292,7 @@ $(function() {
                             if (!this.isStoped){
                                 this.next();
                             }
-                        }
+                            ч }
                     );
                 };
 

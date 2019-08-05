@@ -399,7 +399,7 @@ $(function () {
                             html:
                                 $('<span>', {class: 'timer', text: this.config.defaultTimerValue}).get(0).outerHTML +
                                 $('<button>', {class: 'btn btn-primary timer-btn pause-btn', text: this.config.icons.pauseBtn}).get(0).outerHTML +
-                                $('<button>', {class: 'btn btn-danger timer-btn del-timer-btn', text: this.config.icons.deleteBtn}).get(0).outerHTML,
+                                    $('<button>', {class: 'btn btn-danger timer-btn del-timer-btn', text: this.config.icons.deleteBtn}).get(0).outerHTML,
                         });
                 }
 
