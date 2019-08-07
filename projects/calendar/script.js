@@ -1,8 +1,10 @@
 $(function () {
     const versions = {
-        PROTOTYPE() {},
+        PROTOTYPE() {
+        },
 
-        ES5() {},
+        ES5() {
+        },
 
         ES6() {
             class CalendarPage {
@@ -18,12 +20,17 @@ $(function () {
 
                 _bindStructure() {
                     return $('<form>', {
-                        class: 'add-container',
-                        html:
-                            $('<input>', { type: 'text', class: 'name-cal' }).get(0).outerHTML +
-                            $('<input>', { type: 'button', class: 'add-cal', value: '+', disabled: true }).get(0).outerHTML +
-                            $('<div>', { class: 'calendars-container'}).get(0).outerHTML
-                    });
+                            class: 'add-container',
+                            html:
+                                $('<input>', {type: 'text', class: 'name-cal'}).get(0).outerHTML +
+                                $('<input>', {
+                                    type: 'button',
+                                    class: 'add-cal',
+                                    value: '+',
+                                    disabled: true
+                                }).get(0).outerHTML
+                        }).get(0).outerHTML +
+                        $('<div>', {class: 'calendars-container'}).get(0).outerHTML
                 }
 
                 _bindEvent() {
@@ -32,8 +39,8 @@ $(function () {
                     });
 
                     this.nameInputElement.on('keyup', (e) => {
-                         this.btnAddCalendar.prop('disabled', !this.nameInputElement.val().trim());
-                        if(e.code === 13) {
+                        this.btnAddCalendar.prop('disabled', !this.nameInputElement.val().trim());
+                        if (e.code === 13) {
                             this._addCalendar();
                         }
                     })
@@ -53,56 +60,93 @@ $(function () {
                 monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"
                 ];
-                weekDays = ["Mon", "Tue", "Wed","Thu","Fri","Sat","Sun"];
+                weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-               constructor(calendar) {
-                   this.currentDate = this._getCurrentDate();
-                   this.structure = this._bindStructure(calendar);
-               }
+                constructor(calendar) {
+                    this.currentDate = this._getCurrentDate();
+                    this.structure = this._bindStructure(calendar);
+                }
 
-               _bindStructure(calendar) {
-                   const generateWeek = weekDays => weekDays.map(text => $('<li>', { text }).get(0).outerHTML).join('');
-                   const generateDays = () => '';
+                _bindStructure(calendar) {
+                    const generateWeek = weekDays => weekDays.map(text => $('<li>', {text}).get(0).outerHTML).join('');
+                    // const days = this._render(this.currentDate.year, this.monthNames.indexOf(this.currentDate.month));
+                    const generateDays = days => days.map(text => $('<li>', {text}).get(0).outerHTML).join('');
 
-                   return $('<div>', {
-                       class: 'calendar',
-                       html:
-                           $('<h3>', { text: calendar.name }).get(0).outerHTML +
-                           $('<div>', {
-                               class: 'calendar-control',
-                               html:
-                                   $('<button>', { class: 'left', text: '<' }).get(0).outerHTML +
-                                   $('<span>', { text: this.currentDate.month }).get(0).outerHTML +
-                                   $('<button>', { class: 'right', text: '>' }).get(0).outerHTML
-                           }).get(0).outerHTML +
-                           $('<ul>', {
-                               class: 'days',
-                               html: generateWeek(this.weekDays)
-                           }).get(0).outerHTML +
-                           $('<ul>', {
-                               class: 'date',
-                               html: generateDays()
-                           }).get(0).outerHTML +
-                           $('<input>', { class: 'result', type: 'text' }).get(0).outerHTML +
-                           $('<input>', { class: 'format', type: 'text' }).get(0).outerHTML
-                   });
-               }
+                    return $('<div>', {
+                        class: 'calendar',
+                        html:
+                            $('<h3>', {text: calendar.name}).get(0).outerHTML +
+                            $('<div>', {
+                                class: 'calendar-control',
+                                html:
+                                    $('<button>', {class: 'left', text: '<'}).get(0).outerHTML +
+                                    $('<span>', {text: this.currentDate.month + " " + this.currentDate.year}).get(0).outerHTML +
+                                    $('<button>', {class: 'right', text: '>'}).get(0).outerHTML
+                            }).get(0).outerHTML +
+                            $('<ul>', {
+                                class: 'days',
+                                html: generateWeek(this.weekDays)
+                            }).get(0).outerHTML +
+                            $('<ul>', {
+                                class: 'date',
+                                html: generateDays(this._render(this.currentDate.year, this.monthNames.indexOf(this.currentDate.month)))
+                            }).get(0).outerHTML +
+                            $('<input>', {class: 'result', type: 'text'}).get(0).outerHTML +
+                            $('<input>', {class: 'format', type: 'text'}).get(0).outerHTML
+                    });
+                }
 
-               _getCurrentDate() {
-                   const date = new Date();
+                _getCurrentDate() {
+                    const date = new Date();
 
-                   return {
-                       month: this.monthNames[date.getMonth()],
-                   }
-               }
+                    return {
+                        month: this.monthNames[date.getMonth()],
+                        year: date.getFullYear(),
+                    }
+                }
 
-               _bindEvents() {
+                _render(year, month) {
+                    let resultMonth = [{}];
+                    let d = new Date(year, month);
 
-               }
+                    if (this.constructor.getDaysWeek(d) !== 0) {
+                        console.log(this.getDaysMonth(d));
+                    }
 
-               _delCalendar() {
+                    // if (this.constructor.getDaysWeek(d) !== 0) {
+                    //     for (let i = this.constructor.getDaysWeek(d); i < 7; i++) {
+                    //         resultMonth[resultMonth.length] = { day: ''};
+                    //     }
+                    // }
 
-               }
+                    return resultMonth;
+                }
+
+                static getDaysWeek(date) {
+                    let day = date.getDay();
+                    if (day === 0) day = 7;
+                    return day - 1;
+                }
+
+                getDaysMonth(date) {
+                    let result = [];
+                    const month = date.getMonth();
+
+                    while (date.getMonth() === month) {
+                        result[result.length] = { day: date.getDate() };
+                        date.setDate(date.getDate() + 1);
+                    }
+
+                    return result;
+                }
+
+                _bindEvents() {
+
+                }
+
+                _delCalendar() {
+
+                }
             }
 
             new CalendarPage();
@@ -119,21 +163,21 @@ $(function () {
             }
 
             Calendar.prototype = {
-                init(){
-                    this.container =$('#calendar');
+                init() {
+                    this.container = $('#calendar');
                     this.table = this.container.find('tbody');
                     this.addCalendarToView();
                     console.log(this.month)
                 },
 
-                addCalendarToView (){
+                addCalendarToView() {
                     for (var i = 0; i < this.date.getDay(); i++) {
                         const placebo = $('<td>');
                         placebo.appendTo(this.table)
                     }
 
                     while (this.date.getMonth() === this.month) {
-                        const dateCell =$( '<td>', { text: this.date.getDate() } );
+                        const dateCell = $('<td>', {text: this.date.getDate()});
                         dateCell.appendTo(this.table);
 
                         if (this.date.getDay() % 7 == 6) { // вс, последний день - перевод строки
