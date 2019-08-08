@@ -57,7 +57,12 @@
     font-size: 12px;
     margin: 2px;
     display: inline-block;
-    border: 1px black solid;
+    /* border: 1px black solid; */
     width: 30px;
     text-align: center;
+    cursor: pointer;
+}
+
+.date li :hover {
+    font-size: 16px;
 }
