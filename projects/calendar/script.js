@@ -64,13 +64,16 @@ $(function () {
 
                 constructor(calendar) {
                     this.currentDate = this._getCurrentDate();
-                    console.log(this.currentDate);
                     this.structure = this._bindStructure(calendar);
                 }
 
                 _bindStructure(calendar) {
                     const generateWeek = weekDays => weekDays.map(text => $('<li>', {text}).get(0).outerHTML).join('');
-                    const generateDays = days => days.map( ({text}) => $('<li>', {text}).get(0).outerHTML).join('');
+                    const generateDays = days => days.map(({text, current}) => $('<li>', {
+                        class: current === true ? 'actual-month' : 'other-month',
+                        text,
+                        current
+                    }).get(0).outerHTML).join('');
 
                     return $('<div>', {
                         class: 'calendar',
@@ -90,7 +93,6 @@ $(function () {
                             $('<ul>', {
                                 class: 'date',
                                 html: generateDays(this._render(this.currentDate.year, this.monthNames.indexOf(this.currentDate.month)))
-                                // html: generateDays(this._render(2019, 0))
                             }).get(0).outerHTML +
                             $('<input>', {class: 'result', type: 'text'}).get(0).outerHTML +
                             $('<input>', {class: 'format', type: 'text'}).get(0).outerHTML
@@ -107,16 +109,14 @@ $(function () {
                 }
 
                 _render(year, month) {
-                    // console.log(year, month);
                     let resultMonth = [];
                     let d = new Date(year, month);
 
                     resultMonth = this.getDaysMonth(year, month);
                     if (this.getDayWeek(d) !== 0) {
-                        resultMonth = this.getDaysMonth(year, month - 1).slice( - this.getDayWeek(d)).concat(resultMonth);
+                        resultMonth = this.getDaysMonth(year, month - 1).slice(-this.getDayWeek(d)).concat(resultMonth);
                     }
-                    // console.log(resultMonth);
-                    d = new Date(year,month + 1,0);
+                    d.setMonth(d.getMonth() + 1, 0);
                     if (this.getDayWeek(d) !== 6) {
                         let date = 1;
                         for (let i = this.getDayWeek(d); i < 6; i++) {
@@ -126,7 +126,6 @@ $(function () {
                             };
                             date++;
                         }
-                        // console.log(resultMonth);
                     }
 
                     return resultMonth;
@@ -149,7 +148,7 @@ $(function () {
                     while (date.getMonth() === m) {
                         result[result.length] = {
                             text: date.getDate(),
-                            current: true,
+                            current: this.monthNames.indexOf(this.currentDate.month) === m,
                         };
                         date.setDate(date.getDate() + 1);
                     }
@@ -167,7 +166,6 @@ $(function () {
             }
 
             new CalendarPage();
-
         },
 
         RAW() {

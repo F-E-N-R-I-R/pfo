@@ -8,6 +8,7 @@
 
 .calendar-control span {
     line-height: 30px;
+    font-size: large;
 }
 
 .calendar-control .left {
@@ -21,8 +22,7 @@
 .calendar {
     display: inline-block;
     width: 240px;
-    border: 1px black solid;
-    border-radius: 5px;
+    border: 1px gray solid;
     margin: 2px;
 }
 
@@ -46,7 +46,7 @@
     font-size: 12px;
     margin: 2px;
     display: inline-block;
-    border: 1px black solid;
+    border: 1px gray solid;
     width: 30px;
     text-align: center;
 }
@@ -54,15 +54,26 @@
 .date li {
     line-height: 30px;
     height: 30px;
-    font-size: 12px;
+    font-size: 16px;
     margin: 2px;
     display: inline-block;
-    /* border: 1px black solid; */
     width: 30px;
     text-align: center;
     cursor: pointer;
 }
 
-.date li :hover {
+.date li:hover {
     font-size: 16px;
+    font-weight: bold;
 }
+
+.actual-month {
+    background-color: #a7a7a7;
+    color: black;
+}
+
+.other-month {
+    background-color: lightgray;
+    color: #777777;
+}
+
