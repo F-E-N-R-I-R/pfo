@@ -70,7 +70,7 @@ $(function () {
                 _bindStructure(calendar) {
                     const generateWeek = weekDays => weekDays.map(text => $('<li>', {text}).get(0).outerHTML).join('');
                     const generateDays = days => days.map(({text, current}) => $('<li>', {
-                        class: current === true ? 'actual-month' : 'other-month',
+                        class: current ? 'actual-month' : 'other-month',
                         text,
                         current
                     }).get(0).outerHTML).join('');
@@ -82,9 +82,9 @@ $(function () {
                             $('<div>', {
                                 class: 'calendar-control',
                                 html:
-                                    $('<button>', {class: 'left', text: '<'}).get(0).outerHTML +
+                                    $('<button>', {class: 'left fa fa-caret-left'}).get(0).outerHTML +
                                     $('<span>', {text: this.currentDate.month + " " + this.currentDate.year}).get(0).outerHTML +
-                                    $('<button>', {class: 'right', text: '>'}).get(0).outerHTML
+                                    $('<button>', {class: 'right fa fa-caret-right'}).get(0).outerHTML
                             }).get(0).outerHTML +
                             $('<ul>', {
                                 class: 'days',
@@ -93,6 +93,27 @@ $(function () {
                             $('<ul>', {
                                 class: 'date',
                                 html: generateDays(this._render(this.currentDate.year, this.monthNames.indexOf(this.currentDate.month)))
+                            }).get(0).outerHTML +
+                            $('<div>', {
+                                class: 'btn-group',
+                                role: 'group',
+                                'aria-label': 'Basic example',
+                                html:
+                                    $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-primary',
+                                        text: 'Single'
+                                    }).get(0).outerHTML +
+                                    $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-primary',
+                                        text: 'Multiple'
+                                    }).get(0).outerHTML +
+                                    $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-primary',
+                                        text: 'Range'
+                                    }).get(0).outerHTML
                             }).get(0).outerHTML +
                             $('<input>', {class: 'result', type: 'text'}).get(0).outerHTML +
                             $('<input>', {class: 'format', type: 'text'}).get(0).outerHTML
@@ -111,20 +132,29 @@ $(function () {
                 _render(year, month) {
                     let resultMonth = [];
                     let d = new Date(year, month);
+                    let date;
 
-                    resultMonth = this.getDaysMonth(year, month);
-                    if (this.getDayWeek(d) !== 0) {
-                        resultMonth = this.getDaysMonth(year, month - 1).slice(-this.getDayWeek(d)).concat(resultMonth);
-                    }
+                    resultMonth = this.getDaysMonth(month);
                     d.setMonth(d.getMonth() + 1, 0);
                     if (this.getDayWeek(d) !== 6) {
-                        let date = 1;
+                        date = 1;
                         for (let i = this.getDayWeek(d); i < 6; i++) {
-                            resultMonth[resultMonth.length] = {
+                            resultMonth.push({
                                 text: date,
                                 current: false,
-                            };
+                            });
                             date++;
+                        }
+                    }
+                    d.setDate(0);
+                    if (this.getDayWeek(d) !== 6) {
+                        date = d.getDate();
+                        for (let i = this.getDayWeek(d); i >= 0; i--) {
+                            resultMonth.unshift({
+                                text: date,
+                                current: false,
+                            });
+                            date--;
                         }
                     }
 
@@ -141,14 +171,14 @@ $(function () {
                     return day - 1;
                 }
 
-                getDaysMonth(y, m) {
+                getDaysMonth(m) {
                     let result = [];
-                    let date = new Date(y, m);
+                    let date = new Date(new Date().getFullYear(), m);
 
                     while (date.getMonth() === m) {
                         result[result.length] = {
                             text: date.getDate(),
-                            current: this.monthNames.indexOf(this.currentDate.month) === m,
+                            current: true,
                         };
                         date.setDate(date.getDate() + 1);
                     }

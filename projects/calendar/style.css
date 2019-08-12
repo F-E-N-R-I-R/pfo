@@ -15,15 +15,28 @@
     float: left;
 }
 
+.left, .right {
+    border: 0;
+    background: transparent;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
 .calendar-control {
     text-align: center;
 }
 
 .calendar {
     display: inline-block;
-    width: 240px;
+    width: 260px;
     border: 1px gray solid;
-    margin: 2px;
+    margin: 10px;
+    padding: 10px;
+    font: 13px/1.5 "Helvetica Neue", Helvatica, Arial, san-serif;
+}
+
+.add-container {
+    margin: 10px;
 }
 
 .add-cal {
@@ -38,42 +51,52 @@
 
 .date, .days, .result, .format {
     width: 100%;
+    margin: 2px;
 }
 
 .days li {
     line-height: 30px;
     height: 30px;
-    font-size: 12px;
+    font-size: 14px;
     margin: 2px;
     display: inline-block;
-    border: 1px gray solid;
     width: 30px;
     text-align: center;
+    color: #484848;
+    text-shadow: none;
 }
 
 .date li {
     line-height: 30px;
     height: 30px;
-    font-size: 16px;
+    font-size: 14px;
     margin: 2px;
     display: inline-block;
     width: 30px;
     text-align: center;
     cursor: pointer;
+    text-shadow: none;
 }
 
 .date li:hover {
-    font-size: 16px;
     font-weight: bold;
+    font-size: 16px;
+    background-color: #ebf9fa;
+}
+
+li.actual-month:hover {
+    color: #85DDDF;
+}
+
+li.other-month:hover {
+    color: #E8E6E6;
 }
 
 .actual-month {
-    background-color: #a7a7a7;
-    color: black;
+    color: #484848;
 }
 
 .other-month {
-    background-color: lightgray;
-    color: #777777;
+    color: #bdbbbb;
 }
 
