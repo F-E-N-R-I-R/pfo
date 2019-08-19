@@ -61,18 +61,24 @@ $(function () {
                     "July", "August", "September", "October", "November", "December"
                 ];
                 weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                selectedDate;
 
                 constructor(calendar) {
                     this.currentDate = this._getCurrentDate();
                     this.structure = this._bindStructure(calendar);
+                    this.resultInputElement = this.structure.find('.result');
+
+                    this._bindEvents();
                 }
 
                 _bindStructure(calendar) {
                     const generateWeek = weekDays => weekDays.map(text => $('<li>', {text}).get(0).outerHTML).join('');
-                    const generateDays = days => days.map(({text, current}) => $('<li>', {
+                    const generateDays = days => days.map(({text, current, month, year}) => $('<li>', {
                         class: current ? 'actual-month' : 'other-month',
                         text,
-                        current
+                        current,
+                        month,
+                        year,
                     }).get(0).outerHTML).join('');
 
                     return $('<div>', {
@@ -101,17 +107,17 @@ $(function () {
                                 html:
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-primary',
+                                        class: 'btn btn-secondary',
                                         text: 'Single'
                                     }).get(0).outerHTML +
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-primary',
+                                        class: 'btn btn-secondary',
                                         text: 'Multiple'
                                     }).get(0).outerHTML +
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-primary',
+                                        class: 'btn btn-secondary',
                                         text: 'Range'
                                     }).get(0).outerHTML
                             }).get(0).outerHTML +
@@ -142,6 +148,8 @@ $(function () {
                             resultMonth.push({
                                 text: date,
                                 current: false,
+                                month: d.getMonth() + 1,
+                                year: d.getFullYear(),
                             });
                             date++;
                         }
@@ -153,6 +161,8 @@ $(function () {
                             resultMonth.unshift({
                                 text: date,
                                 current: false,
+                                month: d.getMonth(),
+                                year: d.getFullYear(),
                             });
                             date--;
                         }
@@ -179,6 +189,8 @@ $(function () {
                         result[result.length] = {
                             text: date.getDate(),
                             current: true,
+                            month: date.getMonth(),
+                            year: date.getFullYear(),
                         };
                         date.setDate(date.getDate() + 1);
                     }
@@ -187,7 +199,20 @@ $(function () {
                 }
 
                 _bindEvents() {
+                    this.structure
+                        .on('click', '.date li', (e) => {
+                            let day = $(e.target).closest('li');
+                            if (!day) return;
+                            this.highlight(day);
+                        });
+                }
 
+                highlight(day) {
+                    if (this.selectedDate) {
+                        this.selectedDate.removeClass('selected-date');
+                    }
+                    this.selectedDate = day;
+                    this.selectedDate.addClass('selected-date');
                 }
 
                 _delCalendar() {

@@ -100,3 +100,8 @@ li.other-month:hover {
     color: #bdbbbb;
 }
 
+.selected-date {
+    font-weight: bold;
+    background-color: #5891FA;
+}
+
