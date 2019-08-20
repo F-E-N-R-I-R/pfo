@@ -81,15 +81,20 @@
 .date li:hover {
     font-weight: bold;
     font-size: 16px;
-    background-color: #ebf9fa;
+    background-color: #CDF8FA;
 }
 
 li.actual-month:hover {
-    color: #85DDDF;
+    color: #65c9df;
 }
 
 li.other-month:hover {
     color: #E8E6E6;
+}
+
+li.actual-month.selected-date:hover,
+li.selected-date.other-month:hover {
+    background-color: #73fab5;
 }
 
 .actual-month {
@@ -102,6 +107,6 @@ li.other-month:hover {
 
 .selected-date {
     font-weight: bold;
-    background-color: #5891FA;
+    background-color: #73fab5;
 }
 

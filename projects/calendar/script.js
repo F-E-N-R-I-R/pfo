@@ -61,7 +61,8 @@ $(function () {
                     "July", "August", "September", "October", "November", "December"
                 ];
                 weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-                selectedDate;
+                selectedDates = [];
+                maxLength = 1;
 
                 constructor(calendar) {
                     this.currentDate = this._getCurrentDate();
@@ -107,17 +108,17 @@ $(function () {
                                 html:
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-secondary',
+                                        class: 'btn btn-secondary single',
                                         text: 'Single'
                                     }).get(0).outerHTML +
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-secondary',
+                                        class: 'btn btn-secondary multiple',
                                         text: 'Multiple'
                                     }).get(0).outerHTML +
                                     $('<button>', {
                                         type: 'button',
-                                        class: 'btn btn-secondary',
+                                        class: 'btn btn-secondary range',
                                         text: 'Range'
                                     }).get(0).outerHTML
                             }).get(0).outerHTML +
@@ -204,15 +205,28 @@ $(function () {
                             let day = $(e.target).closest('li');
                             if (!day) return;
                             this.highlight(day);
-                        });
+                        })
+                        .on('click', '.single', () => {
+                            this.maxLength = 1;
+                            console.log('single');
+                        })
+                        .on('click', '.multiple', () => {
+                            this.maxLength = 999999999;
+                            console.log('multiple');
+                        })
+                        .on('click', '.range', () => {
+                            this.maxLength = 999999999;
+                            console.log('range');
+                        })
                 }
 
                 highlight(day) {
-                    if (this.selectedDate) {
-                        this.selectedDate.removeClass('selected-date');
+                    if ($(day).hasClass("selected-date"))
+                        day.removeClass('selected-date');
+                    else {
+                        day.addClass('selected-date');
+                        this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
                     }
-                    this.selectedDate = day;
-                    this.selectedDate.addClass('selected-date');
                 }
 
                 _delCalendar() {
