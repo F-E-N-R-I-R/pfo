@@ -62,7 +62,7 @@ $(function () {
                 ];
                 weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                 selectedDates = [];
-                maxLength = 1;
+                typeSelectDate = 'single';
 
                 constructor(calendar) {
                     this.currentDate = this._getCurrentDate();
@@ -204,29 +204,62 @@ $(function () {
                         .on('click', '.date li', (e) => {
                             let day = $(e.target).closest('li');
                             if (!day) return;
+                            this.getSelectedDates(day, this.typeSelectDate);
                             this.highlight(day);
                         })
-                        .on('click', '.single', () => {
-                            this.maxLength = 1;
-                            console.log('single');
+                        .on('click', '.single', (e) => {
+                            this.typeSelectDate = 'single';
+                            console.log(e);
                         })
-                        .on('click', '.multiple', () => {
-                            this.maxLength = 999999999;
-                            console.log('multiple');
+                        .on('click', '.multiple', (e) => {
+                            this.typeSelectDate = 'multiple';
+                            console.log(e);
                         })
-                        .on('click', '.range', () => {
-                            this.maxLength = 999999999;
-                            console.log('range');
+                        .on('click', '.range', (e) => {
+                            this.typeSelectDate = 'range';
+                            console.log(e);
                         })
                 }
 
+                getSelectedDates(day, type) {
+                    switch (type) {
+                        case 'single': {
+                            this.selectedDates = day;
+                            console.log(this.selectedDates);
+                            return this.selectedDates;
+                        }
+                        case 'multiple': {
+                            this.selectedDates.push(day);
+                            console.log(this.selectedDates);
+                            return this.selectedDates;
+
+                        }
+                        case 'range': {
+                            this.selectedDates.push(day);
+                            console.log(this.selectedDates);
+                            return this.selectedDates;
+                        }
+                    }
+                }
+
                 highlight(day) {
+                    //single
                     if ($(day).hasClass("selected-date"))
                         day.removeClass('selected-date');
                     else {
                         day.addClass('selected-date');
                         this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
                     }
+
+                    // multiple
+                    // if ($(day).hasClass("selected-date"))
+                    //     day.removeClass('selected-date');
+                    // else {
+                    //     day.addClass('selected-date');
+                    //     this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
+                    // }
+
+                    //range
                 }
 
                 _delCalendar() {
