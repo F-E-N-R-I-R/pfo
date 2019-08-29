@@ -205,19 +205,17 @@ $(function () {
                             let day = $(e.target).closest('li');
                             if (!day) return;
                             this.getSelectedDates(day, this.typeSelectDate);
-                            this.highlight(day);
+                            this.highlight();
+                            this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
                         })
-                        .on('click', '.single', (e) => {
+                        .on('click', '.single', () => {
                             this.typeSelectDate = 'single';
-                            console.log(e);
                         })
-                        .on('click', '.multiple', (e) => {
+                        .on('click', '.multiple', () => {
                             this.typeSelectDate = 'multiple';
-                            console.log(e);
                         })
-                        .on('click', '.range', (e) => {
+                        .on('click', '.range', () => {
                             this.typeSelectDate = 'range';
-                            console.log(e);
                         })
                 }
 
@@ -226,32 +224,31 @@ $(function () {
                         case 'single': {
                             this.selectedDates = day;
                             console.log(this.selectedDates);
-                            return this.selectedDates;
+                            // return this.selectedDates;
+                            break;
                         }
                         case 'multiple': {
                             this.selectedDates.push(day);
                             console.log(this.selectedDates);
-                            return this.selectedDates;
-
+                            // return this.selectedDates;
+                            break;
                         }
                         case 'range': {
                             this.selectedDates.push(day);
                             console.log(this.selectedDates);
-                            return this.selectedDates;
+                            // return this.selectedDates;
+                            break;
                         }
                     }
                 }
 
-                highlight(day) {
-                    //single
-                    if ($(day).hasClass("selected-date"))
-                        day.removeClass('selected-date');
-                    else {
-                        day.addClass('selected-date');
-                        this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
+                highlight() {
+                    for(let i = 0; i < this.selectedDates.length; i++) {
+                        this.selectedDates[i].class += 'selected-date';
                     }
 
-                    // multiple
+                    console.log(this.selectedDates);
+
                     // if ($(day).hasClass("selected-date"))
                     //     day.removeClass('selected-date');
                     // else {
@@ -259,7 +256,6 @@ $(function () {
                     //     this.resultInputElement.val(new Date(day.attr('year'), day.attr('month'), day.text()));
                     // }
 
-                    //range
                 }
 
                 _delCalendar() {
